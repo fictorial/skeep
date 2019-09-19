@@ -30,6 +30,11 @@ button#new-game, button#toggle-help {
   cursor: pointer;
 }
 
+button#new-game:active, button#toggle-help:active {
+  color: #e7c250;
+}
+
+
 button#new-game {
   right: 0;
 }
@@ -42,7 +47,7 @@ button#toggle-help {
   margin: auto;
   margin-top: 2em;
   max-width: 800px;
-  text-align: center
+  border: 1px solid
 }
 
 ul {
@@ -125,4 +130,13 @@ ul {
   font-weight: normal;
   padding: 0.4em;
   color: #565656;
+}
+
+.help-label {
+  text-align: left;
+  color: #878f9e;
+  padding: 0.25em;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: normal;
 }

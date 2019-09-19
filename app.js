@@ -1,3 +1,8 @@
 window.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM fully loaded and parsed');
+  document.getElementById('toggle-help').addEventListener('click', () => {
+    let help = document.getElementById('help');
+    help.style.visibility = help.style.visibility === "visible" ? "hidden" : "visible"
+  });
+  
+  
 });
