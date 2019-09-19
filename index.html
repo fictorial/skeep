@@ -1,27 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Hello!</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="/style.css">
-    
-    <!-- import the webpage's javascript file -->
-    <script src="/script.js" defer></script>
-  </head>  
-  <body>
-    <h1>Hi there!</h1>
-    
-    <p>
-      I'm your cool new webpage. Made with <a href="https://glitch.com">Glitch</a>!
-    </p>
-
-    <!-- include the Glitch button to show what the webpage is about and
-          to make it easier for folks to view source and remix -->
-    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
-    <script src="https://button.glitch.me/button.js"></script>
-  </body>
+<html>
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SKEEP</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,600&display=swap" rel="stylesheet">
+  <script src="game.js"></script>
+  <script src="app.js"></script>
+</head>
+<body>
+  <button id="toggle-help">HELP</button>
+  <div id="title">SKEEP</div>
+  <button id="new-game">NEW</button>
+  <ul id="main">
+    <li>
+      <ul class="horiz" id="cpu-hand">
+        <li class="card cpu" id="cpu-hand-0">&nbsp;</li>
+        <li class="card cpu" id="cpu-hand-1">&nbsp;</li>
+        <li class="card cpu" id="cpu-hand-2">&nbsp;</li>
+        <li class="card cpu" id="cpu-hand-3">&nbsp;</li>
+        <li class="card cpu" id="cpu-hand-4">&nbsp;</li>
+      </ul>
+    </li>
+    <li>
+      <ul class="horiz" id="cpu-discard-piles">
+        <li class="card cpu empty" id="cpu-discard-0">&nbsp;</li>
+        <li class="card cpu empty" id="cpu-discard-1">&nbsp;</li>
+        <li class="card cpu empty" id="cpu-discard-2">&nbsp;</li>
+        <li class="card cpu empty" id="cpu-discard-3">&nbsp;</li>
+        <li class="card cpu alone" id="cpu-stock">7</li>
+      </ul>
+    </li>
+    <li>
+      <ul class="horiz" id="build-piles">
+        <li class="card build" id="build-0">&nbsp;</li>
+        <li class="card build" id="build-1">&nbsp;</li>
+        <li class="card build" id="build-2">&nbsp;</li>
+        <li class="card build" id="build-3">&nbsp;</li>
+        <li class="card draw alone" id="draw">&nbsp;</li>
+      </ul>
+    </li>
+    <li>
+      <ul class="horiz" id="player-discard-piles">
+        <li class="card player empty" id="player-discard-0">&nbsp;</li>
+        <li class="card player empty" id="player-discard-1">&nbsp;</li>
+        <li class="card player empty" id="player-discard-2">&nbsp;</li>
+        <li class="card player empty" id="player-discard-3">&nbsp;</li>
+        <li class="card player alone" id="player-stock">19</li>
+      </ul>
+    </li>
+    <li>
+      <ul class="horiz" id="player-hand">
+        <li class="card player" id="player-hand-0">9</li>
+        <li class="card player" id="player-hand-1">8</li>
+        <li class="card player" id="player-hand-2">W</li>
+        <li class="card player" id="player-hand-3">7</li>
+        <li class="card player selected" id="player-hand-4">12</li>
+      </ul>
+    </li>
+    <li class="help">
+      <p>
+        The goal is to be the first to play all the cards in your stock pile.
+        Players take turns trying to build sequences of cards from 1-12 in the 4
+        build piles by moving cards from your stock, one of the discard piles, or
+        your hand.</p>
+      <p>
+        When no moves remain, discard a card from your hand to one of
+        4 discard piles. If you play all 5 cards in your hand, you will be drawn
+        another 5 immediately.</p>
+      <p>
+        W cards are wild.  Discard piles do not require a sequence.</p>
+      <p>
+        To move a card, click/tap it and then click/tap where you want to move it.</p>
+    </li>
+  </ul>
+</body>
 </html>
