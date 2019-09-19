@@ -1,7 +1,11 @@
+function toggle(e) {
+  e.style.display = window.getComputedStyle(e).display === "block" ? "none" : "block"
+}
+
 window.addEventListener('DOMContentLoaded', (event) => {
   document.getElementById('toggle-help').addEventListener('click', () => {
-    let help = document.getElementById('help');
-    help.style.visibility = help.style.visibility === "visible" ? "hidden" : "visible"
+    toggle(document.getElementById('help'));
+    for (let e of document.getElementsByClassName('help-label')) toggle(e)
   });
   
   

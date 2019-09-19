@@ -46,8 +46,10 @@ button#toggle-help {
 #main {
   margin: auto;
   margin-top: 2em;
-  max-width: 800px;
-  border: 1px solid
+  max-width: 420px;
+  background-color: rgba(0,0,0,0.05);
+  border-radius: 10px;
+    padding: 2em;
 }
 
 ul {
@@ -117,26 +119,34 @@ ul {
 }
 
 .help {
-  visibility: hidden;
-  background-color: #e1e6e7;
+  display: none;
+  background-color: rgba(0,0,0,0.1);
   padding: 0.5em;
-  margin: 2em;
-  margin-top: 1em;
+  margin-bottom: 2em;
   border-radius: 0.5em;
 }
 
-.help p {
+.help p, .help h4 {
   text-align: left;
   font-weight: normal;
   padding: 0.4em;
   color: #565656;
 }
 
+.help h4 {
+  font-weight: bold;
+  font-size: large;
+}
+
 .help-label {
+  display: none;
   text-align: left;
-  color: #878f9e;
+  color: rgba(0,0,0,0.5);
   padding: 0.25em;
+  padding-bottom: 0;
+  margin-bottom: 1em;
   text-transform: uppercase;
-  font-size: 10px;
+  font-size: 0.9em;
   font-weight: normal;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
 }
