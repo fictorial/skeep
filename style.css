@@ -14,8 +14,8 @@ body, html {
 #title {
   text-align: center;
   color: #878f9e;
-  padding: 0.25em;
-  font-size: 1.4em;
+  padding: 0.4em;
+  font-size: 1.5em;
 }
 
 button#new-game, button#toggle-help {
@@ -149,4 +149,12 @@ ul {
   font-size: 0.9em;
   font-weight: normal;
   border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.badge {
+  font-size: 10px;
+  border: 1px solid;
+  width: 30px;
+  height: 30px;
+  margin-right: -100%;
 }
