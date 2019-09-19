@@ -38,7 +38,7 @@ class Pile {
    */
 
   popTopCard() {
-    if (this.cards.length === 0) throw new Exception("empty");
+    if (this.cards.length === 0) throw new Error("empty");
     return this.cards.pop();
   }
 
@@ -56,7 +56,7 @@ class Pile {
    */
 
   peekTop() {
-    if (this.cards.length === 0) throw new Exception("empty");
+    if (this.cards.length === 0) throw new Error("empty");
     return this.cards[this.cards.length - 1];
   }
 
@@ -106,7 +106,7 @@ class BuildPile extends NumberedPile {
   willPushCard(card) {
     if (card.isWild || this.peekTop().number + 1 === card.number) return;
 
-    throw new Exception("cannot push card");
+    throw new Error("cannot push card");
   }
 
   didPushCard(card) {
@@ -288,14 +288,14 @@ class Game {
 
     for (let i = 0; i < 12; ++i) {
       for (let j = 1; j <= 12; ++j) {
-        this.drawPile.push(new Card(j));
+        this.drawPile.pushCard(new Card(j));
       }
     }
 
     // Create wild cards
 
     for (let i = 0; i < 18; ++i) {
-      this.drawPile.push(new Card(0, true));
+      this.drawPile.pushCard(new Card(0, true));
     }
 
     this.drawPile.shuffle();
@@ -372,7 +372,7 @@ class Game {
    */
 
   performAction(action) {
-    if (!this.isActive) throw new Exception("game has ended");
+    if (!this.isActive) throw new Error("game has ended");
 
     let player = this.currentTurn.player;
 
@@ -406,7 +406,7 @@ class Game {
       if (this.delegate) this.delegate.didDiscard(player, action);
       this._endTurn();
     } else {
-      throw new Exception("unsupported action");
+      throw new Error("unsupported action");
     }
   }
 
@@ -427,3 +427,4 @@ class Game {
     }
   }
 }
+
