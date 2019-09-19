@@ -152,9 +152,19 @@ ul {
 }
 
 .badge {
-  font-size: 10px;
-  border: 1px solid;
-  width: 30px;
-  height: 30px;
-  margin-right: -100%;
+   position:relative;
+}
+.badge[data-badge]:after {
+   content:attr(data-badge);
+   position:absolute;
+   top:-1em;
+   right:-1em;
+   font-size:0.45em;
+   background:#454545;
+   color: rgba(255,255,255,0.8);
+   width:2em;
+  height:2em;
+  line-height:2em;
+  border-radius:50%;
+  text-align:center;
 }
