@@ -626,6 +626,15 @@ let gameDelegate = {
   didDealCards: callLater((cardsDrawn, handCardNumbers) => {
     $title.textContent = `${_isCPUCurrent() ? "MY" : "YOUR"} TURN`;
     animateCSS($title, "tada");
+    
+      $title.classList.remove('my-turn')
+      $title.classList.remove('cpu-turn')
+
+    if (_isCPUCurrent()) {
+      $title.classList.add('cpu-turn');
+    } else {
+      $title.classList.remove('my-turn');
+    }
 
     let delay = 0;
     for (let cardNumber of handCardNumbers) {

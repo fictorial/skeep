@@ -143,13 +143,22 @@ section {
 }
 
 #title {
-  color: #ddaf44;
+  color: rgba(255,255,255,0.5);
   display: flex;
   justify-content: center;
   align-content: center;
   flex-direction: column;
   font-size: 1.2em;
 }
+
+.cpu-turn {
+  color: #b985f5 !important;
+}
+
+.player-turn {
+  color: #fdc229 !important;
+}
+
 
 #new-game,
 #toggle-help {
