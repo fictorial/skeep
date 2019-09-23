@@ -2,135 +2,86 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Fira Sans', sans-serif;
+  font-family: "Fira Sans", sans-serif;
   font-weight: 600;
 }
 
-body, html {
-  margin: 0;
-  background-color: #fefdec;
-}
-
-#title {
-  text-align: center;
-  color: #878f9e;
-  padding: 0.4em;
-  font-size: 1.5em;
-}
-
-button#new-game, button#toggle-help {
-  position: absolute;
-  top: 0;
-  border: none;
-  background-color: transparent;
-  padding: 0.5em;
-  color: #878f9e;  
-  font-weight: normal;
-  font-size: 1.4em;
-  cursor: pointer;
-}
-
-button#new-game:active, button#toggle-help:active {
-  color: #e7c250;
-}
-
-
-button#new-game {
-  right: 0;
-}
-
-button#toggle-help {
-  left: 0;
+body,
+html {
+  background-color: #412a5b;
+  height: 100%;
+  
+  /* disable selection */
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 #main {
-  margin: auto;
-  margin-top: 2em;
-  max-width: 420px;
-  background-color: rgba(0,0,0,0.05);
-  border-radius: 10px;
-  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-content: stretch;
+  height: 100%;
 }
 
-ul {
-  list-style-type: none;
-}
-
-.horiz {
-  margin-bottom: 1.2em;
-  display: inline-block;
+section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0.5em 0;
 }
 
 .card {
-  display: inline-block;
-  min-width: 60px;
-  min-height: 90px;
-  line-height: 90px;
-  text-align: center;
-  font-size: 30px;
-  color: rgba(0,0,0,0.6);
-  border: 2px solid transparent;
-  border-radius: 0.2em;
-  margin: 0 0.05em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(2/3*(44px + 5vh));
+  height: calc(44px + 5vh);
+  margin: 0 calc(2px + 1vmin);
+  font-size: calc(16px + 2vh);
+  background-color: #76559c;
+  color: rgba(255, 255, 255, 0.6);
+  border-radius: 0.1em;
 }
 
 .card.empty {
-  background-color: #e1e6e7;
-}
-
-.card.player.empty {
-  background-color: #ece1b6;
-}
-
-.card.cpu.empty {
-  background-color: #d3e3e9;
+  opacity: 0.2;
 }
 
 .card.selected {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
-  border: 3px solid black;
-}
-
-.cpu {
-  background-color: #90bac8;
+  border: 2px solid #d976d6;
 }
 
 .build {
-  background-color: #e77f4e;
-  color: white;
   cursor: pointer;
 }
 
 .player {
-  background-color: #e7c250;
   cursor: pointer;
 }
 
-.draw {
-  background-color: #565656;
-}
-
-.alone {
-  margin-left: 1.2em;
-}
-
-#build-piles {
-  margin: 3em 0;
+.draw, .stock {
+  background-color: rgba(0,0,0,0.2);
 }
 
 .help {
   display: none;
-  background-color: rgba(0,0,0,0.1);
   padding: 0.5em;
+  padding-bottom: 1em;
+  margin: 1em;
   margin-bottom: 2em;
-  border-radius: 0.5em;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-.help p, .help h4 {
+.help p,
+.help h4 {
   text-align: left;
   font-weight: normal;
   padding: 0.4em;
-  color: #565656;
+  color: #bab1c5;
 }
 
 .help h4 {
@@ -140,31 +91,148 @@ ul {
 
 .help-label {
   display: none;
-  text-align: left;
-  color: rgba(0,0,0,0.5);
-  padding: 0.25em;
-  padding-bottom: 0;
-  margin-bottom: 1em;
+  color: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
-  font-size: 0.9em;
+  font-size: 0.8em;
   font-weight: normal;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+  text-align: center;
+  margin-top: 2em;
 }
 
 .badge {
-   position:relative;
+  position: relative;
 }
+
 .badge[data-badge]:after {
-   content:attr(data-badge);
-   position:absolute;
-   top:-1em;
-   right:-1em;
-   font-size:0.45em;
-   background:#454545;
-   color: rgba(255,255,255,0.8);
-   width:2em;
-  height:2em;
-  line-height:2em;
-  border-radius:50%;
-  text-align:center;
+  content: attr(data-badge);
+  position: absolute;
+  top: -1em;
+  right: -1em;
+  font-size: 0.45em;
+  color: #533b6e;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  border-radius: 50%;
+  text-align: center;
+  background-color: rgba(0,0,0,0.5);
+}
+
+#cpu-stock[data-badge]:after {
+  background-color: #b985f5;
+}
+
+#player-stock[data-badge]:after {
+  background-color: #fdc229;
+}
+
+#controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-self: stretch;
+  min-height: 44px;
+}
+
+#board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  
+  align-self: center;
+  height: 100%;
+}
+
+#title {
+  color: #ddaf44;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  font-size: 1.2em;
+}
+
+#new-game,
+#toggle-help {
+  min-width: 44px;
+  border: none;
+  background-color: transparent;
+  color: #bab1c5;
+  cursor: pointer;
+  font-size: 1.0em;
+  padding: 0 .5em;
+}
+
+#new-game:active,
+#toggle-help:active {
+  color: #fdc229;
+}
+
+#build-piles {
+  border-top: 1px solid rgba(255,255,255,0.2);
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding: 2em 0;
+  margin: 1em 0;
+}
+
+/* cannot have our own rotate transform and have animate.css add its own.
+   we would need to wrap each card and have animate.css work on the wrapper
+   and this gets annoying quickly. 
+
+#player-hand-0 {
+  transform: rotateZ(-25deg);
+}
+
+#player-hand-1 {
+  transform: rotateZ(-12deg);
+}
+
+#player-hand-2 {
+  transform: rotateZ(1deg);
+}
+
+#player-hand-3 {
+  transform: rotateZ(13deg);
+}
+
+#player-hand-4 {
+  transform: rotateZ(22deg);
+}
+
+#cpu-hand-0 {
+  transform: rotateZ(24deg);
+}
+
+#cpu-hand-1 {
+  transform: rotateZ(12deg);
+}
+
+#cpu-hand-2 {
+  transform: rotateZ(-1deg);
+}
+
+#cpu-hand-3 {
+  transform: rotateZ(-14deg);
+}
+
+#cpu-hand-4 {
+  transform: rotateZ(-22deg);
+}
+
+*/
+
+
+/* I do not feel like dealing with a landscape orientation on mobile web for now.
+   Thus, if the screen is small and in landscape, show the normal portrait orientation
+   but rotated as to give the user a hint that landscape isn't really supported. */
+
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+  html {
+    transform: rotate(-90deg);
+    transform-origin: left top;
+    width: 100vh;
+    overflow-x: hidden;
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
 }
