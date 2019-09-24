@@ -607,6 +607,15 @@ function callLater(fn, delay = 1000) {
 let gameDelegate = {
   gameDidStart() {
     _syncDrawPileBadge();
+    
+    for (let i = 0; i < 4; ++i) {
+      _syncBuildPile(i);
+      _syncPile($cpuDiscardPiles[i], game.cpuPlayer.discardPiles[i], true, false)
+      _syncPile($playerDiscardPiles[i], game.humanPlayer.discardPiles[i], true, false)
+      _syncPile($playerStockPile, game.humanPlayer.stockPile, true, false)
+      _syncPile($cpuStockPile, game.cpuPlayer.stockPile, true, false)
+    }
+
   },
 
   turnDidStart() {
@@ -625,10 +634,7 @@ let gameDelegate = {
 
   didDealCards: callLater((cardsDrawn, handCardNumbers) => {
     $title.textContent = `${_isCPUCurrent() ? "MY" : "YOUR"} TURN`;
-    animateCSS($title, "tada");
     
-      $title.classList.remove('my-turn')
-      $title.classList.remove('cpu-turn')
 
     if (_isCPUCurrent()) {
       $title.classList.add('cpu-turn');
@@ -636,13 +642,18 @@ let gameDelegate = {
       $title.classList.remove('my-turn');
     }
 
+    animateCSS($title, "tada", () => {
+      $title.classList.remove('my-turn')
+      $title.classList.remove('cpu-turn')
+    });
+
     let delay = 0;
     for (let cardNumber of handCardNumbers) {
       let thisDelay = delay;
       delay += 250;
       setTimeout(() => _syncCurrentHandCard(cardNumber), thisDelay);
     }
-
+    
     _syncDrawPileBadge();
     _syncCurrentStockPile(false);
 
