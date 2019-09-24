@@ -12,12 +12,11 @@
   </head>
   <body>
     <div id="main">
-    <div id="controls">
-      <button id="toggle-help">HELP</button>
-      <div id="title">SKEEP</div>
-      <button id="new-game">NEW</button>
-    </div>
-    <div id="board">
+      <div id="controls">
+        <button id="toggle-help">HELP</button>
+        <div id="title">SKEEP</div>
+        <button id="new-game">NEW</button>
+      </div>
       <div class="help" id="help">
         <h4>
           How to Play SKEEP
@@ -36,52 +35,59 @@
         <p>
         To move a card, select the card and then select the target card pile.
         To deselect a selected card, select the card again.
+        On desktop browsers, you can also drag and drop the cards.
         </p>
       </div>
-      <div>
-        <div class="help-label">CPU Player's Hand</div>
-        <section>
-          <div class="card cpu" id="cpu-hand-0"></div>
-          <div class="card cpu" id="cpu-hand-1"></div>
-          <div class="card cpu" id="cpu-hand-2"></div>
-          <div class="card cpu" id="cpu-hand-3"></div>
-          <div class="card cpu" id="cpu-hand-4"></div>
-        </section>
-        <div class="help-label">CPU Player's Discard Piles and Stock Pile</div>
-        <section>
-          <div class="card cpu empty" id="cpu-discard-0"></div>
-          <div class="card cpu empty" id="cpu-discard-1"></div>
-          <div class="card cpu empty" id="cpu-discard-2"></div>
-          <div class="card cpu empty" id="cpu-discard-3"></div>
-          <div class="card cpu alone badge stock" id="cpu-stock" data-badge=""></div>
-        </section>
-        <div class="help-label">Build Piles and Draw Pile</div>
-        <section id="build-piles">
-          <div class="card build empty" id="build-0" ondrop="dragDidDrop(event)" ondragover="dragDidHover(event)"></div>
-          <div class="card build empty" id="build-1" ondrop="dragDidDrop(event)" ondragover="dragDidHover(event)"></div>
-          <div class="card build empty" id="build-2" ondrop="dragDidDrop(event)" ondragover="dragDidHover(event)"></div>
-          <div class="card build empty" id="build-3" ondrop="dragDidDrop(event)" ondragover="dragDidHover(event)"></div>
-          <div class="card draw alone badge" id="draw" data-badge=""></div>
-        </section>
-        <div class="help-label">Your Discard Piles and Stock Pile</div>
-        <section>
-          <div class="card player empty" id="player-discard-0" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
-          <div class="card player empty" id="player-discard-1" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
-          <div class="card player empty" id="player-discard-2" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
-          <div class="card player empty" id="player-discard-3" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
-          <div class="card player alone badge stock" id="player-stock" data-badge="" draggable="true" ondragstart="dragDidStart(event)"></div>
-        </section>
-        <div class="help-label">Your Hand</div>
-        <section>
-          <div class="card player" id="player-hand-0" draggable="true" ondragstart="dragDidStart(event)"></div>
-          <div class="card player" id="player-hand-1" draggable="true" ondragstart="dragDidStart(event)"></div>
-          <div class="card player" id="player-hand-2" draggable="true" ondragstart="dragDidStart(event)"></div>
-          <div class="card player" id="player-hand-3" draggable="true" ondragstart="dragDidStart(event)"></div>
-          <div class="card player" id="player-hand-4" draggable="true" ondragstart="dragDidStart(event)"></div>
-        </section>
+      <div id="board">
+        <div>
+          <div id="cpu-turn" class="turn-indicator-label">My Turn</div>
+          <div class="player-area" id="cpu-area">
+            <div class="help-label">CPU Player's Hand</div>
+            <section>
+              <div class="card cpu" id="cpu-hand-0"></div>
+              <div class="card cpu" id="cpu-hand-1"></div>
+              <div class="card cpu" id="cpu-hand-2"></div>
+              <div class="card cpu" id="cpu-hand-3"></div>
+              <div class="card cpu" id="cpu-hand-4"></div>
+            </section>
+            <div class="help-label">CPU Player's Discard Piles and Stock Pile</div>
+            <section>
+              <div class="card cpu empty" id="cpu-discard-0"></div>
+              <div class="card cpu empty" id="cpu-discard-1"></div>
+              <div class="card cpu empty" id="cpu-discard-2"></div>
+              <div class="card cpu empty" id="cpu-discard-3"></div>
+              <div class="card cpu badge stock" id="cpu-stock" data-badge=""></div>
+            </section>
+          </div>
+          <div class="help-label">Build Piles and Draw Pile</div>
+          <section id="build-piles">
+            <div class="card build empty" id="build-0" ondrop="dragDidDrop(event)" ondragover="dragDidHover(event)"></div>
+            <div class="card build empty" id="build-1" ondrop="dragDidDrop(event)" ondragover="dragDidHover(event)"></div>
+            <div class="card build empty" id="build-2" ondrop="dragDidDrop(event)" ondragover="dragDidHover(event)"></div>
+            <div class="card build empty" id="build-3" ondrop="dragDidDrop(event)" ondragover="dragDidHover(event)"></div>
+            <div class="card draw badge" id="draw" data-badge=""></div>
+          </section>
+          <div class="player-area" id="human-area">
+            <div class="help-label">Your Discard Piles and Stock Pile</div>
+            <section>
+              <div class="card human empty" id="human-discard-0" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
+              <div class="card human empty" id="human-discard-1" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
+              <div class="card human empty" id="human-discard-2" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
+              <div class="card human empty" id="human-discard-3" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
+              <div class="card human badge stock" id="human-stock" data-badge="" draggable="true" ondragstart="dragDidStart(event)"></div>
+            </section>
+            <div class="help-label">Your Hand</div>
+            <section>
+              <div class="card human" id="human-hand-0" draggable="true" ondragstart="dragDidStart(event)"></div>
+              <div class="card human" id="human-hand-1" draggable="true" ondragstart="dragDidStart(event)"></div>
+              <div class="card human" id="human-hand-2" draggable="true" ondragstart="dragDidStart(event)"></div>
+              <div class="card human" id="human-hand-3" draggable="true" ondragstart="dragDidStart(event)"></div>
+              <div class="card human" id="human-hand-4" draggable="true" ondragstart="dragDidStart(event)"></div>
+            </section>
+          </div>
+          <div id="human-turn" class="turn-indicator-label active">Your Turn</div>
+        </div>
       </div>
-    </div>
     </div>
   </body>
 </html>
-

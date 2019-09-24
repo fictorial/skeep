@@ -4,13 +4,14 @@
   padding: 0;
   font-family: "Fira Sans", sans-serif;
   font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 body,
 html {
   background-color: #412a5b;
   height: 100%;
-  
+
   /* disable selection */
   -webkit-user-select: none;
   -moz-user-select: -moz-none;
@@ -37,7 +38,7 @@ section {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: calc(2/3*(44px + 5vh));
+  width: calc(2 / 3 * (44px + 5vh));
   height: calc(44px + 5vh);
   margin: 0 calc(2px + 1vmin);
   font-size: calc(16px + 2vh);
@@ -59,21 +60,20 @@ section {
   cursor: pointer;
 }
 
-.player {
+.human {
   cursor: pointer;
 }
 
-.draw, .stock {
-  background-color: rgba(0,0,0,0.2);
+.draw,
+.stock {
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .help {
   display: none;
-  padding: 0.5em;
-  padding-bottom: 1em;
-  margin: 1em;
-  margin-bottom: 2em;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 1em;
+  background-color: rgba(0,0,0,0.2);
+  color: rgba(255,255,255,0.5);
 }
 
 .help p,
@@ -81,7 +81,6 @@ section {
   text-align: left;
   font-weight: normal;
   padding: 0.4em;
-  color: #bab1c5;
 }
 
 .help h4 {
@@ -96,7 +95,8 @@ section {
   font-size: 0.8em;
   font-weight: normal;
   text-align: center;
-  margin-top: 2em;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
 }
 
 .badge {
@@ -109,20 +109,20 @@ section {
   top: -1em;
   right: -1em;
   font-size: 0.45em;
-  color: #533b6e;
+  color: rgba(0, 0, 0, 0.73);
   width: 2em;
   height: 2em;
   line-height: 2em;
   border-radius: 50%;
   text-align: center;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgb(100, 64, 145);
 }
 
 #cpu-stock[data-badge]:after {
-  background-color: #b985f5;
+  background-color: #76559c;
 }
 
-#player-stock[data-badge]:after {
+#human-stock[data-badge]:after {
   background-color: #fdc229;
 }
 
@@ -132,18 +132,19 @@ section {
   justify-content: space-between;
   align-self: stretch;
   min-height: 44px;
+  z-index: 1;
 }
 
 #board {
   display: flex;
   flex-direction: column;
-  justify-content: center;  
+  justify-content: center;
   align-self: center;
   height: 100%;
 }
 
 #title {
-  color: rgba(255,255,255,0.5);
+  color: rgba(255, 255, 255, 0.5);
   display: flex;
   justify-content: center;
   align-content: center;
@@ -151,14 +152,40 @@ section {
   font-size: 1.2em;
 }
 
-.cpu-turn {
-  color: #b985f5 !important;
+.turn-indicator-label {
+  text-align: center;
+  text-transform: uppercase;
+  opacity: 0;
+  padding: 0.5em;
 }
 
-.player-turn {
-  color: #fdc229 !important;
+.turn-indicator-label.active {
+  opacity: 1;
 }
 
+#cpu-turn {
+  color: #76559c;
+}
+
+#human-turn {
+  color: #fdc229;
+}
+
+.player-area {
+  padding: 1em;
+  border-radius: 1em;
+  background-color: rgba(0,0,0,0.05);
+  margin-bottom: 2em;
+}
+
+.player-area.active {
+  background-color: #331f49;
+}
+
+#human-area {
+  margin-bottom: 0;
+  margin-top: 2em;
+}
 
 #new-game,
 #toggle-help {
@@ -167,8 +194,8 @@ section {
   background-color: transparent;
   color: #bab1c5;
   cursor: pointer;
-  font-size: 1.0em;
-  padding: 0 .5em;
+  font-size: 1em;
+  padding: 0 0.5em;
 }
 
 #new-game:active,
@@ -177,58 +204,10 @@ section {
 }
 
 #build-piles {
-  border-top: 1px solid rgba(255,255,255,0.2);
-  border-bottom: 1px solid rgba(255,255,255,0.2);
   padding: 2em 0;
-  margin: 1em 0;
+  background-color: #3b1e49;
+  border-radius: 1em;
 }
-
-/* cannot have our own rotate transform and have animate.css add its own.
-   we would need to wrap each card and have animate.css work on the wrapper
-   and this gets annoying quickly. 
-
-#player-hand-0 {
-  transform: rotateZ(-25deg);
-}
-
-#player-hand-1 {
-  transform: rotateZ(-12deg);
-}
-
-#player-hand-2 {
-  transform: rotateZ(1deg);
-}
-
-#player-hand-3 {
-  transform: rotateZ(13deg);
-}
-
-#player-hand-4 {
-  transform: rotateZ(22deg);
-}
-
-#cpu-hand-0 {
-  transform: rotateZ(24deg);
-}
-
-#cpu-hand-1 {
-  transform: rotateZ(12deg);
-}
-
-#cpu-hand-2 {
-  transform: rotateZ(-1deg);
-}
-
-#cpu-hand-3 {
-  transform: rotateZ(-14deg);
-}
-
-#cpu-hand-4 {
-  transform: rotateZ(-22deg);
-}
-
-*/
-
 
 /* I do not feel like dealing with a landscape orientation on mobile web for now.
    Thus, if the screen is small and in landscape, show the normal portrait orientation

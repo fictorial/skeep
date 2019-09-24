@@ -1,18 +1,6 @@
-- new game doesn't clear old cards!
-
-- don't show CPU player's hand
-
-- animate card movements instead of the bounce
-  https://codepen.io/ThibaultJanBeyer/pen/RRPQEX
-
-
-:: later
-
-- sounds
-
 - make it a PWA; manifest, icon, etc.
 
-- Host it on skeep.glitch.me
+- sounds
 
 - better CPU logic
     - create potential runs from hand, discard, and stock cards taking wilds into account

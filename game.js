@@ -1,5 +1,3 @@
-// Card {{{
-
 /**
  * A playing card. Each card has a numeric value.
  * A card may be "wild" mean means that the numeric value is
@@ -16,9 +14,6 @@ class Card {
     return this.isWild ? "W" : String(this.number);
   }
 }
-
-// }}}
-// Pile {{{
 
 /**
  * A pile or stack of cards.
@@ -86,9 +81,6 @@ class Pile {
   }
 }
 
-// }}}
-// NumberedPile {{{
-
 /**
  * A pile of cards that is numbered relative to sibling piles.
  */
@@ -100,18 +92,12 @@ class NumberedPile extends Pile {
   }
 }
 
-// }}}
-// DiscardPile {{{
-
 /**
  * A discard pile is a pile of cards owned by a single player.
  * Any card may be placed atop any other card in a discard pile.
  */
 
 class DiscardPile extends NumberedPile {}
-
-// }}}
-// BuildPile {{{
 
 /**
  * A build pile is a pile of cards that are built in
@@ -136,9 +122,6 @@ class BuildPile extends NumberedPile {
     if (card.isWild) card.number = this.cardCount;
   }
 }
-
-// }}}
-// Hand {{{
 
 /**
  * A player's hand consists of at most 5 cards.
@@ -195,9 +178,6 @@ class Hand {
   }
 }
 
-// }}}
-// Player {{{
-
 /**
  * A player has a hand, 4 discard piles, and one stock pile.
  */
@@ -219,9 +199,6 @@ class Player {
   }
 }
 
-// }}}
-// Turn {{{
-
 /**
  * A player's turn in a game consists of a sequence of
  * validated actions.  These actions are processed by the game
@@ -239,9 +216,6 @@ class Turn {
   }
 }
 
-// }}}
-// PlayHandAction {{{
-
 /**
  * Player plays a card from their hand to one of the shared build piles.
  */
@@ -252,9 +226,6 @@ class PlayHandAction {
     this.handCardNumber = handCardNumber;
   }
 }
-
-// }}}
-// PlayDiscardAction {{{
 
 /**
  * Player plays a card from one of their discard piles to one of the shared build piles.
@@ -267,9 +238,6 @@ class PlayDiscardAction {
   }
 }
 
-// }}}
-// PlayStockAction {{{
-
 /**
  * Player plays a card from their stock pile to one of the shared build piles.
  */
@@ -279,9 +247,6 @@ class PlayStockAction {
     this.buildPileNumber = buildPileNumber;
   }
 }
-
-// }}}
-// DiscardAction {{{
 
 /**
  * Player discards a card from their hand to one of their discard piles.
@@ -294,17 +259,12 @@ class DiscardAction {
   }
 }
 
-// }}}
-// Game {{{
-
 /**
  * A game consists of 2 players, a shared draw pile,
  * and 4 shared build piles.
  */
 
 class Game {
-  // delegate info {{{
-
   /**
    * The delegate is notified when game state changes occur.
    *
@@ -323,9 +283,6 @@ class Game {
    *
    * If `shortGame` is true, each player gets fewer cards at the outset.
    */
-
-  // }}}
-  // constructor {{{
 
   constructor(delegate, shortGame = false) {
     this.delegate = delegate;
@@ -378,8 +335,6 @@ class Game {
     // this.drawPile.cards = this.drawPile.cards.slice(0, 12);
   }
 
-  // }}}
-
   start() {
     if (this.isActive) return;
     this.isActive = true;
@@ -390,8 +345,6 @@ class Game {
   get currentTurn() {
     return this.turns[this.turns.length - 1];
   }
-
-  // _drawHandCardsAsNeeded {{{
 
   // Add cards from draw pile to current player's hand so they have 5 cards.
   //
@@ -441,8 +394,6 @@ class Game {
     return { cardsDrawn, handCardNumbers };
   }
 
-  // }}}
-
   _addTurn(turn) {
     this.turns.push(turn);
     if (this.delegate) this.delegate.turnDidStart();
@@ -471,8 +422,6 @@ class Game {
     this._addTurn(new Turn(nextPlayer));
   }
 
-  // performPlayHandAction {{{
-
   /**
    * Current player moves a card from their hand to a build pile.
    */
@@ -500,9 +449,6 @@ class Game {
     }
   }
 
-  // }}}
-  // performPlayStockAction {{{
-
   /**
    * Current player moves the top card from their stock pile to a build pile.
    */
@@ -526,9 +472,6 @@ class Game {
     this._checkGameOver();
   }
 
-  // }}}
-  // performPlayDiscardAction {{{
-
   /**
    * Current player moves the top card from one of their discard piles to a build pile.
    */
@@ -547,9 +490,6 @@ class Game {
     if (this.delegate) this.delegate.didPlayDiscardCard(action);
     this._didPlayCard(buildPile, action.buildPileNumber);
   }
-
-  // }}}
-  // performDiscardAction {{{
 
   /**
    * Current player moves a card from their hand to one of their discard piles.
@@ -571,8 +511,6 @@ class Game {
     if (this.delegate) this.delegate.didDiscardHandCard(action);
     this._endCurrentTurn();
   }
-
-  // }}}
 
   _didPlayCard(buildPile, buildPileNumber) {
     // Remove cards from build piles that finish the sequence of 1 to 12.
@@ -597,5 +535,3 @@ class Game {
     }
   }
 }
-
-// }}}

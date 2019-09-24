@@ -1,21 +1,20 @@
 let game;
 
-// DOM elements {{{
-
 let $moveSource;
 let $buildPiles = [];
 let $cpuHand = [];
-let $playerHand = [];
+let $humanHand = [];
 let $cpuDiscardPiles = [];
-let $playerDiscardPiles = [];
+let $humanDiscardPiles = [];
 let $cpuStockPile;
-let $playerStockPile;
+let $humanStockPile;
 let $drawPile;
 let $title;
 let $newGame;
-
-// }}}
-// Load elements from page {{{
+let $humanTurn;
+let $cpuTurn;
+let $humanArea;
+let $cpuArea;
 
 function _loadElementsFromPage() {
   $title = document.getElementById("title");
@@ -33,20 +32,17 @@ function _loadElementsFromPage() {
   // Human player
 
   for (let i = 0; i < 5; ++i) {
-    $playerHand[i] = document.getElementById(`player-hand-${i}`);
-    $playerHand[i].addEventListener("click", _didClickPlayerHandCard);
+    $humanHand[i] = document.getElementById(`human-hand-${i}`);
+    $humanHand[i].addEventListener("click", _didClickHumanHandCard);
   }
 
   for (let i = 0; i < 4; ++i) {
-    $playerDiscardPiles[i] = document.getElementById(`player-discard-${i}`);
-    $playerDiscardPiles[i].addEventListener(
-      "click",
-      _didClickPlayerDiscardPile
-    );
+    $humanDiscardPiles[i] = document.getElementById(`human-discard-${i}`);
+    $humanDiscardPiles[i].addEventListener("click", _didClickHumanDiscardPile);
   }
 
-  $playerStockPile = document.getElementById("player-stock");
-  $playerStockPile.addEventListener("click", _didClickPlayerStockPile);
+  $humanStockPile = document.getElementById("human-stock");
+  $humanStockPile.addEventListener("click", _didClickHumanStockPile);
 
   // Shared build and draw piles
 
@@ -65,18 +61,18 @@ function _loadElementsFromPage() {
 
   $newGame = document.getElementById("new-game");
   $newGame.addEventListener("click", _didClickNewGame);
-}
 
-// }}}
-// Toggle element display {{{
+  $humanTurn = document.getElementById("human-turn");
+  $cpuTurn = document.getElementById("cpu-turn");
+
+  $humanArea = document.getElementById("human-area");
+  $cpuArea = document.getElementById("cpu-area");
+}
 
 function toggleDisplay($el) {
   $el.style.display =
     window.getComputedStyle($el).display === "block" ? "none" : "block";
 }
-
-// }}}
-// Animation {{{
 
 function animateCSS($el, animationName, callback) {
   const $node = $el || document.querySelector($el);
@@ -92,9 +88,6 @@ function animateCSS($el, animationName, callback) {
   $node.addEventListener("animationend", handleAnimationEnd);
 }
 
-// }}}
-// Click Help {{{
-
 function _didClickHelp() {
   toggleDisplay(document.getElementById("help"));
 
@@ -102,16 +95,10 @@ function _didClickHelp() {
     toggleDisplay($el);
 }
 
-// }}}
-// Click new game {{{
-
 function _didClickNewGame() {
   game = new Game(gameDelegate);
   game.start();
 }
-
-// }}}
-// Click Player Hand Card {{{
 
 // Human player clicked a card in their own hand with the intent
 // of move the selected card to one of the shared build piles or one
@@ -120,12 +107,12 @@ function _didClickNewGame() {
 // - Cannot select empty card in hand.
 // - Selecting same hand card deselects it.
 
-function _didClickPlayerHandCard(event) {
+function _didClickHumanHandCard(event) {
   if (!game.isActive || !game.currentTurn.player.isHuman) return;
 
   let $node = event.target;
 
-  let handCardNumber = parseInt($node.id.replace("player-hand-", ""), 10);
+  let handCardNumber = parseInt($node.id.replace("human-hand-", ""), 10);
   let card = game.humanPlayer.hand.cards[handCardNumber];
   if (!card) return;
 
@@ -139,9 +126,6 @@ function _didClickPlayerHandCard(event) {
   }
 }
 
-// }}}
-// Click Player Discard Pile {{{
-
 // Human player clicked one of their own discard piles.
 // If there's a selected card already (move source) in the player's hand,
 // that card is discarded.
@@ -153,11 +137,11 @@ function _didClickPlayerHandCard(event) {
 // - Selecting same discard pile deselects it.
 // - Discarding a hand card ends the player's turn.
 
-function _didClickPlayerDiscardPile(event) {
+function _didClickHumanDiscardPile(event) {
   if (!game.isActive || !game.currentTurn.player.isHuman) return;
 
   let $node = event.target;
-  let discardPileNumber = parseInt($node.id.replace("player-discard-", ""), 10);
+  let discardPileNumber = parseInt($node.id.replace("human-discard-", ""), 10);
 
   if (!$moveSource && game.humanPlayer.discardPiles[discardPileNumber].isEmpty)
     return;
@@ -165,9 +149,9 @@ function _didClickPlayerDiscardPile(event) {
   if ($node === $moveSource) {
     $moveSource = null;
     $node.classList.remove("selected");
-  } else if ($moveSource && $moveSource.id.startsWith("player-hand-")) {
+  } else if ($moveSource && $moveSource.id.startsWith("human-hand-")) {
     let handCardNumber = parseInt(
-      $moveSource.id.replace("player-hand-", ""),
+      $moveSource.id.replace("human-hand-", ""),
       10
     );
 
@@ -180,9 +164,6 @@ function _didClickPlayerDiscardPile(event) {
     $node.classList.add("selected");
   }
 }
-
-// }}}
-// Click Build Pile {{{
 
 // Human player has clicked a shared build pile.
 // If a card has been selected (move source), the intent is to moved the selected card to this pile.
@@ -198,15 +179,15 @@ function _didClickBuildPile(event) {
   let buildPileNumber = parseInt($node.id.replace("build-", ""), 10);
 
   if ($moveSource) {
-    if ($moveSource.id === "player-stock") {
+    if ($moveSource.id === "human-stock") {
       try {
         game.performPlayStockAction(new PlayStockAction(buildPileNumber));
       } catch (e) {
         console.warn(e);
       }
-    } else if ($moveSource.id.startsWith("player-hand-")) {
+    } else if ($moveSource.id.startsWith("human-hand-")) {
       let handCardNumber = parseInt(
-        $moveSource.id.replace("player-hand-", ""),
+        $moveSource.id.replace("human-hand-", ""),
         10
       );
 
@@ -217,9 +198,9 @@ function _didClickBuildPile(event) {
       } catch (e) {
         console.warn(e);
       }
-    } else if ($moveSource.id.startsWith("player-discard-")) {
+    } else if ($moveSource.id.startsWith("human-discard-")) {
       let discardPileNumber = parseInt(
-        $moveSource.id.replace("player-discard-", ""),
+        $moveSource.id.replace("human-discard-", ""),
         10
       );
 
@@ -234,12 +215,9 @@ function _didClickBuildPile(event) {
   }
 }
 
-// }}}
-//  Click Player Stock Pile {{{
-
 // Clicking the player stock pile selects its top card.
 
-function _didClickPlayerStockPile(event) {
+function _didClickHumanStockPile(event) {
   if (!game.isActive || !game.currentTurn.player.isHuman) return;
 
   let $node = event.target;
@@ -249,18 +227,12 @@ function _didClickPlayerStockPile(event) {
   $node.classList.add("selected");
 }
 
-// }}}
-// Deselect all selected cards {{{
-
 function _deselectAllCards() {
   for (let $card of document.getElementsByClassName("selected"))
     $card.classList.remove("selected");
 
   $moveSource = null;
 }
-
-// }}}
-// Sync a pile's display to data model {{{
 
 function _syncPile(
   $pile,
@@ -288,19 +260,13 @@ function _syncPile(
   $pile.setAttribute("data-badge", pile.cardCount);
 }
 
-// }}}
-// Sync a pile's badge display to data model {{{
-
 function _syncDrawPileBadge() {
   $drawPile.setAttribute("data-badge", game.drawPile.cardCount);
 }
 
-// }}}
-// Hand helpers {{{
-
 function _currentHand() {
   let player = game.currentTurn.player;
-  let $hand = player.isHuman ? $playerHand : $cpuHand;
+  let $hand = player.isHuman ? $humanHand : $cpuHand;
   let hand = player.hand;
   return [$hand, hand];
 }
@@ -310,9 +276,7 @@ function _currentHandCard(handCardNumber) {
   return [$hand[handCardNumber], hand.cards[handCardNumber]];
 }
 
-function _syncCurrentHandCard(handCardNumber) {
-  let [$card, card] = _currentHandCard(handCardNumber);
-
+function _syncCard($card, card) {
   if (!card) {
     $card.textContent = null;
     $card.classList.remove("selected");
@@ -326,8 +290,10 @@ function _syncCurrentHandCard(handCardNumber) {
   if (card) animateCSS($card, "bounce");
 }
 
-// }}}
-// Discard pile helpers {{{
+function _syncCurrentHandCard(handCardNumber) {
+  let [$card, card] = _currentHandCard(handCardNumber);
+  _syncCard($card, card);
+}
 
 // Returns the DOM element of the given discard pile for the current turn's player
 // as well as the model thereof.
@@ -335,7 +301,7 @@ function _syncCurrentHandCard(handCardNumber) {
 function _currentDiscardPile(discardPileNumber) {
   let player = game.currentTurn.player;
   let $discardPile = player.isHuman
-    ? $playerDiscardPiles[discardPileNumber]
+    ? $humanDiscardPiles[discardPileNumber]
     : $cpuDiscardPiles[discardPileNumber];
   let discardPile = player.discardPiles[discardPileNumber];
   return [$discardPile, discardPile];
@@ -349,15 +315,12 @@ function _syncCurrentDiscardPile(discardPileNumber) {
   _syncPile($discardPile, discardPile);
 }
 
-// }}}
-// Stock pile helpers {{{
-
 // Returns the DOM element of the stock pile for the current turn's player
 // as well as the model thereof.
 
 function _currentStockPile() {
   let player = game.currentTurn.player;
-  let $stockPile = player.isHuman ? $playerStockPile : $cpuStockPile;
+  let $stockPile = player.isHuman ? $humanStockPile : $cpuStockPile;
   return [$stockPile, player.stockPile];
 }
 
@@ -368,9 +331,6 @@ function _syncCurrentStockPile(bounce) {
   let [$stockPile, stockPile] = _currentStockPile();
   _syncPile($stockPile, stockPile, false, bounce);
 }
-
-// }}}
-// Build pile helpers {{{
 
 // Returns the DOM element of the given build pile as well as the model thereof.
 
@@ -386,9 +346,6 @@ function _syncBuildPile(buildPileNumber) {
   let [$buildPile, buildPile] = _buildPile(buildPileNumber);
   _syncPile($buildPile, buildPile, true);
 }
-
-// }}}
-// CPU turn logic {{{
 
 function _isCPUCurrent() {
   return !game.currentTurn.player.isHuman;
@@ -420,8 +377,11 @@ function _cpuCanPlayCard(card) {
 //
 // The delay is so the human player can see what is happening at each step.
 
+let _nextTimeout;
+
 function _submitNextCPUAction() {
-  setTimeout(_nextCPUAction, 1500);
+  if (_nextTimeout) clearTimeout(_nextTimeout);
+  _nextTimeout = setTimeout(_nextCPUAction, 1000);
 }
 
 // *************************************************************
@@ -594,33 +554,61 @@ function _nextCPUAction() {
   }
 }
 
-// }}}
-// Game delegate {{{
-
 // The game delegate recieves notifications from the game model and updates the
 // UI accordingly.
-
-function callLater(fn, delay = 1000) {
-  return (...args) => setTimeout(() => fn(...args), delay);
-}
 
 let gameDelegate = {
   gameDidStart() {
     _syncDrawPileBadge();
-    
+
     for (let i = 0; i < 4; ++i) {
       _syncBuildPile(i);
-      _syncPile($cpuDiscardPiles[i], game.cpuPlayer.discardPiles[i], true, false)
-      _syncPile($playerDiscardPiles[i], game.humanPlayer.discardPiles[i], true, false)
-      _syncPile($playerStockPile, game.humanPlayer.stockPile, true, false)
-      _syncPile($cpuStockPile, game.cpuPlayer.stockPile, true, false)
+
+      _syncPile(
+        $cpuDiscardPiles[i],
+        game.cpuPlayer.discardPiles[i],
+        true,
+        false
+      );
+
+      _syncPile(
+        $humanDiscardPiles[i],
+        game.humanPlayer.discardPiles[i],
+        true,
+        false
+      );
     }
 
+    _syncPile($humanStockPile, game.humanPlayer.stockPile, false, false);
+    _syncPile($cpuStockPile, game.cpuPlayer.stockPile, false, false);
+
+    for (let i = 0; i < 5; ++i) {
+      _syncCard($humanHand[i], game.humanPlayer.hand[i]);
+      _syncCard($cpuHand[i], game.cpuPlayer.hand[i]);
+    }
   },
 
   turnDidStart() {
     _deselectAllCards();
-    return 1000;
+
+    // Change opacity so as not reflow for collapsing the space taken
+    // that would occur with display: none for example.
+
+    $humanArea.classList.remove("active");
+    $cpuArea.classList.remove("active");
+
+    $humanTurn.classList.remove("active");
+    $cpuTurn.classList.remove("active");
+
+    if (_isCPUCurrent()) {
+      $cpuArea.classList.add("active");
+      $cpuTurn.classList.add("active");
+      animateCSS($cpuTurn, "tada");
+    } else {
+      $humanArea.classList.add("active");
+      $humanTurn.classList.add("active");
+      animateCSS($humanTurn, "tada");
+    }
   },
 
   turnDidEnd() {
@@ -632,35 +620,21 @@ let gameDelegate = {
   // the player who's up, animate the dealt cards, update pile counts,
   // and if the CPU is now up, have it play its next action.
 
-  didDealCards: callLater((cardsDrawn, handCardNumbers) => {
-    $title.textContent = `${_isCPUCurrent() ? "MY" : "YOUR"} TURN`;
-    
-
-    if (_isCPUCurrent()) {
-      $title.classList.add('cpu-turn');
-    } else {
-      $title.classList.remove('my-turn');
-    }
-
-    animateCSS($title, "tada", () => {
-      $title.classList.remove('my-turn')
-      $title.classList.remove('cpu-turn')
-    });
-
+  didDealCards: function(cardsDrawn, handCardNumbers) {
     let delay = 0;
     for (let cardNumber of handCardNumbers) {
       let thisDelay = delay;
       delay += 250;
       setTimeout(() => _syncCurrentHandCard(cardNumber), thisDelay);
     }
-    
+
     _syncDrawPileBadge();
     _syncCurrentStockPile(false);
 
     setTimeout(() => {
       if (_isCPUCurrent()) _submitNextCPUAction();
-    }, 1500);
-  }),
+    }, 1000);
+  },
 
   didPlayHandCard({ buildPileNumber, handCardNumber }) {
     console.log("delegate.didPlayHandCard");
@@ -709,9 +683,6 @@ let gameDelegate = {
   }
 };
 
-// }}}
-// Card drag and drop {{{
-
 function dragDidStart(ev) {
   if (_isCPUCurrent()) {
     ev.preventDefault();
@@ -737,7 +708,7 @@ function dragDidDrop(ev) {
   let sourceId = ev.dataTransfer.getData("text/plain");
 
   let buildPileNumber = parseInt($node.id.replace("build-", ""), 10);
-  let discardPileNumber = parseInt($node.id.replace("player-discard-", ""), 10);
+  let discardPileNumber = parseInt($node.id.replace("human-discard-", ""), 10);
 
   if (!isNaN(buildPileNumber)) _didDropOnBuildPile(buildPileNumber, sourceId);
   else if (!isNaN(discardPileNumber))
@@ -747,14 +718,14 @@ function dragDidDrop(ev) {
 // Can drag from discard pile, stock pile, or card in hand.
 
 function _didDropOnBuildPile(buildPileNumber, sourceId) {
-  if (sourceId === "player-stock") {
+  if (sourceId === "human-stock") {
     try {
       game.performPlayStockAction(new PlayStockAction(buildPileNumber));
     } catch (e) {
       console.warn(e);
     }
-  } else if (sourceId.startsWith("player-hand-")) {
-    let handCardNumber = parseInt(sourceId.replace("player-hand-", ""), 10);
+  } else if (sourceId.startsWith("human-hand-")) {
+    let handCardNumber = parseInt(sourceId.replace("human-hand-", ""), 10);
 
     try {
       game.performPlayHandAction(
@@ -763,9 +734,9 @@ function _didDropOnBuildPile(buildPileNumber, sourceId) {
     } catch (e) {
       console.warn(e);
     }
-  } else if (sourceId.startsWith("player-discard-")) {
+  } else if (sourceId.startsWith("human-discard-")) {
     let discardPileNumber = parseInt(
-      sourceId.replace("player-discard-", ""),
+      sourceId.replace("human-discard-", ""),
       10
     );
 
@@ -780,17 +751,14 @@ function _didDropOnBuildPile(buildPileNumber, sourceId) {
 }
 
 function _didDropOnDiscardPile(discardPileNumber, sourceId) {
-  if (sourceId.startsWith("player-hand-")) {
-    let handCardNumber = parseInt(sourceId.replace("player-hand-", ""), 10);
+  if (sourceId.startsWith("human-hand-")) {
+    let handCardNumber = parseInt(sourceId.replace("human-hand-", ""), 10);
 
     game.performDiscardAction(
       new DiscardAction(discardPileNumber, handCardNumber)
     );
   }
 }
-
-// }}}
-// Initialization {{{
 
 // When the DOM is ready, find our elements and start the game.
 
@@ -800,5 +768,3 @@ window.addEventListener("DOMContentLoaded", event => {
   game = new Game(gameDelegate);
   game.start();
 });
-
-// }}}
