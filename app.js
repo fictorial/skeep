@@ -677,9 +677,11 @@ let gameDelegate = {
   },
 
   gameDidEnd() {
-    $title.textContent = game.winner.isHuman ? "YOU WIN! 🤘" : "I WON. 🐙";
+    let text = game.winner.isHuman ? "YOU WIN! 🤘" : "I WON. 🐙";
+    $title.textContent = text;
     animateCSS($title, "tada");
     _deselectAllCards();
+    alert(text);
   }
 };
 
