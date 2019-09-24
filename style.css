@@ -24,7 +24,6 @@ html {
   flex-direction: column;
   justify-content: stretch;
   align-content: stretch;
-  height: 100%;
 }
 
 section {
@@ -38,10 +37,10 @@ section {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: calc(2 / 3 * (44px + 5vh));
-  height: calc(44px + 5vh);
+  height: calc(44px + 3vh);
+  width: calc(2 / 3 * (44px + 3vh));
   margin: 0 calc(2px + 1vmin);
-  font-size: calc(16px + 2vh);
+  font-size: calc(16px + 1.6vh);
   background-color: #76559c;
   color: rgba(255, 255, 255, 0.6);
   border-radius: 0.1em;
@@ -133,6 +132,7 @@ section {
   align-self: stretch;
   min-height: 44px;
   z-index: 1;
+  font-size: .9em;
 }
 
 #board {
@@ -149,14 +149,14 @@ section {
   justify-content: center;
   align-content: center;
   flex-direction: column;
-  font-size: 1.2em;
 }
 
 .turn-indicator-label {
   text-align: center;
   text-transform: uppercase;
   opacity: 0;
-  padding: 0.5em;
+  padding: 0.25em;
+  font-size: 0.9em;
 }
 
 .turn-indicator-label.active {
@@ -175,7 +175,7 @@ section {
   padding: 1em;
   border-radius: 1em;
   background-color: rgba(0,0,0,0.05);
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
 
 .player-area.active {
@@ -184,7 +184,7 @@ section {
 
 #human-area {
   margin-bottom: 0;
-  margin-top: 2em;
+  margin-top: 1em;
 }
 
 #new-game,
