@@ -680,7 +680,12 @@ let gameDelegate = {
     let text = game.winner.isHuman ? "YOU WIN! 🤘" : "I WON. 🐙";
     $title.textContent = text;
     animateCSS($title, "tada");
+
+    $humanTurn.classList.remove("active");
+    $cpuTurn.classList.remove("active");
+
     _deselectAllCards();
+
     alert(text);
   }
 };
