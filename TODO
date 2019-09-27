@@ -1,6 +1,5 @@
-- make it a PWA; manifest, icon, etc.
-
 - sounds
+    - will need to register a service worker and cache the sounds for offline support
 
 - better CPU logic
     - create potential runs from hand, discard, and stock cards taking wilds into account
