@@ -1,5 +1,5 @@
 - sounds
-    - will need to register a service worker and cache the sounds for offline support
+    - cache sounds in sw.js
 
 - better CPU logic
     - create potential runs from hand, discard, and stock cards taking wilds into account
