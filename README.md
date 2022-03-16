@@ -4,8 +4,6 @@ SKEEP is a clone of a popular card game.  You play against the computer.
 
 ![gameplay](images/gameplay.png)
 
-([gameplay video](https://www.loom.com/share/34f3ba6cdc39436eae34cc93d7ee09d7))
-
 ## Board
 
 You have a *stock pile* of cards, 4 *discard piles* of cards, and a *hand* of 5
