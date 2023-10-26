@@ -17,6 +17,8 @@ html {
   -moz-user-select: -moz-none;
   -ms-user-select: none;
   user-select: none;
+
+  font-size: 14px;
 }
 
 #main {
@@ -44,15 +46,17 @@ section {
   background-color: #76559c;
   color: rgba(255, 255, 255, 0.6);
   border-radius: 0.1em;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.4);
 }
 
 .card.empty {
-  opacity: 0.2;
+  opacity: 0.5;
 }
 
 .card.selected {
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
   border: 2px solid #d976d6;
+  background-color: #d976d622;
 }
 
 .build {
@@ -115,6 +119,7 @@ section {
   text-align: center;
   background-color: #ffffff;
   color: rgba(0, 0, 0, 0.73);
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
 }
 
 #cpu-stock[data-badge]:after {
@@ -132,8 +137,21 @@ section {
   justify-content: space-between;
   align-self: stretch;
   z-index: 1;
-  font-size: .9em;
-  padding-top: 2px;
+  padding: 0.25rem 0.5rem;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0.2);
+}
+
+#controls button {
+  border-radius: 0.5em;
+  border: 1px solid #ffffff22;
+  background-color: #ffffff11;
+}
+
+@media (hover: hover) {
+  #controls button:hover {
+    background-color: #ffffff22;
+  }
 }
 
 #board {
@@ -157,7 +175,6 @@ section {
   align-items: center;
   gap: 2px;
   color: rgba(255, 255, 255, 0.5);
-  font-size: x-small;
 }
 
 .turn-indicator-label {
@@ -173,7 +190,8 @@ section {
 }
 
 #cpu-turn {
-  color: #76559c;
+  color: #79d5ea;
+  display: none;
 }
 
 #human-turn {
@@ -183,11 +201,14 @@ section {
 .player-area {
   padding: 1em;
   margin-bottom: 1em;
-  border: 1px solid rgba(0,0,0,0);
+  border: 1px solid #412a5b;
+  border-left-width: 0;
+  border-right-width: 0;
 }
 
 .player-area.active {
-  border-color: #331f49;
+  border-color: #d1c270;
+  background-color: #7c00e230;
 }
 
 #human-area {
@@ -213,11 +234,11 @@ section {
 
 #build-piles {
   padding: 2em 0;
-  background-color: #d2bfdc;
+  background-color: #a38caf78;
 }
 
 #build-piles .card.empty {
-  background: red;
+  background: #fca331;
 }
 
 /* I do not feel like dealing with a landscape orientation on mobile web for now.
