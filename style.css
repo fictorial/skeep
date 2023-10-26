@@ -136,11 +136,6 @@ section {
 }
 
 #board {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-self: center;
-  height: 100%;
 }
 
 #title {
@@ -186,8 +181,7 @@ section {
 
 .player-area {
   padding: 1em;
-  border-radius: 1em;
-  background-color: rgba(0,0,0,0.05);
+  background-color: rgba(0,0,0,0.08);
   margin-bottom: 1em;
 }
 
@@ -219,7 +213,6 @@ section {
 #build-piles {
   padding: 2em 0;
   background-color: #3b1e49;
-  border-radius: 1em;
 }
 
 #build-piles .card.empty {
