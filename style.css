@@ -209,6 +209,10 @@ section {
   border-radius: 1em;
 }
 
+#build-piles .card.empty {
+  background: red;
+}
+
 /* I do not feel like dealing with a landscape orientation on mobile web for now.
    Thus, if the screen is small and in landscape, show the normal portrait orientation
    but rotated as to give the user a hint that landscape isn't really supported. */
