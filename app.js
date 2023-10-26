@@ -357,6 +357,10 @@ function _isCPUCurrent() {
   return !game.currentTurn.player.isHuman;
 }
 
+function _isHumanCurrent() {
+  return game.currentTurn.player.isHuman;
+}
+
 // The CPU player can play a card to a build pile if:
 // - the card is wild; or
 // - the card is 1 more than the top build pile card; or
@@ -596,7 +600,7 @@ let gameDelegate = {
 
   turnDidStart() {
     _deselectAllCards();
-    _hideDisablePileTips();
+    _hideDiscardPileTips();
 
     // Change opacity so as not reflow for collapsing the space taken
     // that would occur with display: none for example.
@@ -620,7 +624,7 @@ let gameDelegate = {
 
   turnDidEnd() {
     _deselectAllCards();
-    _hideDisablePileTips();
+    _hideDiscardPileTips();
   },
 
   // Cards were dealt in the model.  Let's let any animations
