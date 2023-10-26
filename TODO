@@ -1,3 +1,11 @@
+- make the middle discard piles a different color
+
+- tap your own discard pile to see what is in there
+
+- scoreboard for won games; you vs cpu
+
+- store game state to local storage and restore it on page init
+
 - sounds
     - cache sounds in sw.js
 
