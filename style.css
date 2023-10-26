@@ -108,21 +108,22 @@ section {
   top: -1em;
   right: -1em;
   font-size: 0.45em;
-  color: rgba(0, 0, 0, 0.73);
   width: 2em;
   height: 2em;
   line-height: 2em;
   border-radius: 50%;
   text-align: center;
-  background-color: rgb(100, 64, 145);
+  background-color: #ffffff;
+  color: rgba(0, 0, 0, 0.73);
 }
 
 #cpu-stock[data-badge]:after {
-  background-color: #76559c;
+  background-color: #b598d7;
 }
 
 #human-stock[data-badge]:after {
   background-color: #fdc229;
+  color: black;
 }
 
 #controls {
@@ -181,12 +182,12 @@ section {
 
 .player-area {
   padding: 1em;
-  background-color: rgba(0,0,0,0.08);
   margin-bottom: 1em;
+  border: 1px solid rgba(0,0,0,0);
 }
 
 .player-area.active {
-  background-color: #331f49;
+  border-color: #331f49;
 }
 
 #human-area {
