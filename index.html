@@ -88,12 +88,13 @@
             <div class="card draw badge" id="draw" data-badge=""></div>
           </section>
           <div class="player-area" id="human-area">
+            <div id="discard-pile-contents" class="hidden card"></div>
             <div class="help-label">Your Discard Piles and Stock Pile</div>
             <section>
-              <div class="card human empty" id="human-discard-0" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
-              <div class="card human empty" id="human-discard-1" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
-              <div class="card human empty" id="human-discard-2" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
-              <div class="card human empty" id="human-discard-3" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
+              <div class="card human empty discard" id="human-discard-0" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
+              <div class="card human empty discard" id="human-discard-1" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
+              <div class="card human empty discard" id="human-discard-2" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
+              <div class="card human empty discard" id="human-discard-3" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
               <div class="card human badge stock" id="human-stock" data-badge="" draggable="true" ondragstart="dragDidStart(event)"></div>
             </section>
             <div class="help-label">Your Hand</div>
@@ -109,8 +110,6 @@
         </div>
       </div>
     </div>
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-<script src="https://unpkg.com/tippy.js@6"></script>
     <script src="game.js"></script>
     <script src="app.js"></script>
     <script>

@@ -1,3 +1,14 @@
+* :root {
+  --animate-duration: 600ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * :root {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -266,7 +277,41 @@ section {
   }
 }
 
-.tippy-box[data-theme~='dodgerblue'] {
-  background-color: dodgerblue;
-  color: white;
+#discard-pile-contents {
+  position: absolute;
+  margin: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@keyframes reveal {
+  from {
+    transform: translateX(0) translateY(0) rotateZ(0);
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
+  }
+  to {
+    transform: translateX(-70%) translateY(-80%) rotateZ(-10deg);
+    box-shadow: 0 10px 15px 10px rgba(0,0,0,0.1);
+  }
+}
+
+@keyframes reveal-undo {
+  from {
+    transform: translateX(-70%) translateY(-80%) rotateZ(-10deg);
+    box-shadow: 0 10px 15px 10px rgba(0,0,0,0.1);
+  }
+  to {
+    transform: translateX(0) translateY(0) rotateZ(0);
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
+  }
+}
+
+.reveal {
+  animation: reveal 0.5s forwards;
+}
+
+.reveal-undo {
+  animation: reveal-undo 0.5s forwards;
 }

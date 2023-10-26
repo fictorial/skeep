@@ -6,6 +6,7 @@ let $cpuHand = [];
 let $humanHand = [];
 let $cpuDiscardPiles = [];
 let $humanDiscardPiles = [];
+let $discardPileContents;
 let $cpuStockPile;
 let $humanStockPile;
 let $drawPile;
@@ -17,6 +18,9 @@ let $humanTurn;
 let $cpuTurn;
 let $humanArea;
 let $cpuArea;
+
+let longPressTimer;
+let didLongPress = false;
 
 function _loadElementsFromPage() {
   $appName = document.getElementById("app-name");
@@ -44,8 +48,16 @@ function _loadElementsFromPage() {
 
   for (let i = 0; i < 4; ++i) {
     $humanDiscardPiles[i] = document.getElementById(`human-discard-${i}`);
+
+    $humanDiscardPiles[i].addEventListener('mousedown', () => startLongPressTimer(i));
+    $humanDiscardPiles[i].addEventListener('mouseup', endLongPress);
+    $humanDiscardPiles[i].addEventListener('touchstart', () => startLongPressTimer(i));
+    $humanDiscardPiles[i].addEventListener('touchend', endLongPress);
+
     $humanDiscardPiles[i].addEventListener("click", _didClickHumanDiscardPile);
   }
+
+  $discardPileContents = document.getElementById("discard-pile-contents");
 
   $humanStockPile = document.getElementById("human-stock");
   $humanStockPile.addEventListener("click", _didClickHumanStockPile);
@@ -82,10 +94,10 @@ function toggleDisplay($el) {
 
 function animateCSS($el, animationName, callback) {
   const $node = $el || document.querySelector($el);
-  $node.classList.add("animated", animationName);
+  $node.classList.add('animated', animationName);
 
   function handleAnimationEnd() {
-    $node.classList.remove("animated", animationName);
+    $node.classList.remove('animated', animationName);
     $node.removeEventListener("animationend", handleAnimationEnd);
 
     if (typeof callback === "function") callback();
@@ -144,7 +156,7 @@ function _didClickHumanHandCard(event) {
 // - Discarding a hand card ends the player's turn.
 
 function _didClickHumanDiscardPile(event) {
-  if (!game.isActive || !game.currentTurn.player.isHuman) return;
+  if (!game.isActive || !game.currentTurn.player.isHuman || didLongPress) return;
 
   let $node = event.target;
   let discardPileNumber = parseInt($node.id.replace("human-discard-", ""), 10);
@@ -600,7 +612,6 @@ let gameDelegate = {
 
   turnDidStart() {
     _deselectAllCards();
-    _hideDiscardPileTips();
 
     // Change opacity so as not reflow for collapsing the space taken
     // that would occur with display: none for example.
@@ -624,7 +635,6 @@ let gameDelegate = {
 
   turnDidEnd() {
     _deselectAllCards();
-    _hideDiscardPileTips();
   },
 
   // Cards were dealt in the model.  Let's let any animations
@@ -647,7 +657,6 @@ let gameDelegate = {
       if (_isCPUCurrent()) _submitNextCPUAction();
     }, 1000);
 
-    if (_isHumanCurrent()) _hideDiscardPileTips();
   },
 
   didPlayHandCard({ buildPileNumber, handCardNumber }) {
@@ -658,7 +667,6 @@ let gameDelegate = {
     _deselectAllCards();
 
     if (_isCPUCurrent()) _submitNextCPUAction();
-    else _hideDiscardPileTips();
   },
 
   didPlayStockCard({ buildPileNumber }) {
@@ -667,7 +675,6 @@ let gameDelegate = {
     _deselectAllCards();
 
     if (_isCPUCurrent()) _submitNextCPUAction();
-    else _hideDiscardPileTips();
   },
 
   didPlayDiscardCard({ discardPileNumber, buildPileNumber }) {
@@ -676,24 +683,20 @@ let gameDelegate = {
     _deselectAllCards();
 
     if (_isCPUCurrent()) _submitNextCPUAction();
-    else _hideDiscardPileTips();
   },
 
   didDiscardHandCard({ handCardNumber, discardPileNumber }) {
     _syncCurrentDiscardPile(discardPileNumber);
     _syncCurrentHandCard(handCardNumber);
     _deselectAllCards();
-    if (_isHumanCurrent()) _hideDiscardPileTips();
   },
 
   didClearBuildPile(buildPileNumber) {
     setTimeout(() => _syncBuildPile(buildPileNumber), 1000);
-    if (_isHumanCurrent()) _hideDiscardPileTips();
   },
 
   didRecreateDrawPile() {
     _syncDrawPileBadge();
-    if (_isHumanCurrent()) _hideDiscardPileTips();
   },
 
   gameDidEnd() {
@@ -708,7 +711,7 @@ let gameDelegate = {
     else _cpuDidWin();
 
     _deselectAllCards();
-    _hideDiscardPileTips();
+    _hideDiscardPileDisplay();
 
     alert(text);
   }
@@ -745,6 +748,12 @@ function dragDidStart(ev) {
     ev.preventDefault();
     return;
   }
+
+  //if (ev.target.getAnimations().length > 0) {
+  //  ev.preventDefault();
+  //  return;
+  //}
+
   ev.dataTransfer.setData("text/plain", ev.target.id);
   ev.dataTransfer.dropEffect = "move";
   console.log("drag: started dragging", ev.target.id);
@@ -817,37 +826,61 @@ function _didDropOnDiscardPile(discardPileNumber, sourceId) {
   }
 }
 
-function _addDiscardPileTips() {
-  document.querySelectorAll('#human-discard-0, #human-discard-1, #human-discard-2, #human-discard-3').forEach((element, index) => {
-    tippy(element, {
-      content: '',
-      onShow: (instance) => {
-        const discardPile = game.humanPlayer.discardPiles[index];
-        if (discardPile.isEmpty) return false;
-        if (discardPile.cards.length == 1) {
-          instance.setContent("No cards underneath");
-          return;  // not false.
-        }
-        let strings = discardPile.cards
-          .slice(0,-1)
-          .map((card) => card.toString())
-          .reverse();
-        const maxTipCards = 5;    // else gets too tall.
-        const content = (strings.length > maxTipCards)
-          ? strings.slice(0, maxTipCards).join('<br>') + `<br>${strings.length - maxTipCards} more`
-          : strings.join('<br>');
-        instance.setContent(`<div style="text-align: center">${content}</div>`);
-      },
-      delay: 1000,
-      theme: 'dodgerblue',
-      arrow: false,
-      allowHTML: true
-    });
-  });
+function startLongPressTimer(pileIndex) {
+  clearTimeout(longPressTimer);
+
+  longPressTimer = setTimeout(() => {
+    _showDiscardPileContents(pileIndex)
+    didLongPress = true;
+  }, 400);
 }
 
-function _hideDiscardPileTips() {
-  tippy.hideAll();
+function endLongPress(event) {
+  clearTimeout(longPressTimer);
+  longPressTimer = null;
+
+  if (didLongPress) {
+    event.preventDefault();
+
+    // Let click handler see that there was a long press.
+    setTimeout(() => didLongPress = false, 0);
+  }
+}
+
+function _showDiscardPileContents(index) {
+  const discardPile = game.humanPlayer.discardPiles[index];
+
+  if (discardPile.isEmpty || discardPile.cards.length == 1) return false;
+
+  $discardPileContents.innerHTML = discardPile.cards[1].toString();
+
+  const $pile = document.getElementById(`human-discard-${index}`);
+  $pile.style.zIndex = 2;
+
+  // Move the discard pile contents to the exact same position as $pile
+
+  const rect = $pile.getBoundingClientRect();
+  $discardPileContents.style.left = `${rect.left}px`;
+  $discardPileContents.style.top = `${rect.top}px`;
+  $discardPileContents.style.zIndex = 1;
+  $discardPileContents.classList.remove('hidden');
+
+  // Slide up since on mobile the user's hand is below.
+
+  animateCSS($pile, 'slideOutLeft',
+    () => animateCSS($pile, 'slideInLeft', _hideDiscardPileDisplay));
+}
+
+function addAutoRemoveEventListener(target, type, listenerFn, options) {
+    function oneTimeListener(event) {
+        listenerFn(event);
+        target.removeEventListener(type, oneTimeListener, options);
+    }
+    target.addEventListener(type, oneTimeListener, options);
+}
+
+function _hideDiscardPileDisplay() {
+  $discardPileContents.classList.add('hidden');
 }
 
 // When the DOM is ready, find our elements and start the game.
@@ -857,7 +890,6 @@ window.addEventListener("DOMContentLoaded", event => {
 
   _loadElementsFromPage();
   _loadStoredRecord();
-  _addDiscardPileTips();
 
   game.start();
 });
