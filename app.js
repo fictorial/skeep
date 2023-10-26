@@ -609,11 +609,11 @@ let gameDelegate = {
     if (_isCPUCurrent()) {
       $cpuArea.classList.add("active");
       $cpuTurn.classList.add("active");
-      animateCSS($cpuTurn, "tada");
+      animateCSS($cpuTurn, "flash");
     } else {
       $humanArea.classList.add("active");
       $humanTurn.classList.add("active");
-      animateCSS($humanTurn, "tada");
+      animateCSS($humanTurn, "flash");
     }
   },
 
@@ -802,12 +802,43 @@ function _didDropOnDiscardPile(discardPileNumber, sourceId) {
   }
 }
 
+function _addDiscardPileTips() {
+  document.querySelectorAll('#human-discard-0, #human-discard-1, #human-discard-2, #human-discard-3').forEach((element, index) => {
+    tippy(element, {
+      content: '',
+      onShow: (instance) => {
+        const discardPile = game.humanPlayer.discardPiles[index];
+        if (discardPile.isEmpty) return false;
+        if (discardPile.cards.length == 1) {
+          instance.setContent("No cards underneath");
+          return;  // not false.
+        }
+        let strings = discardPile.cards
+          .slice(0,-1)
+          .map((card) => card.toString())
+          .reverse();
+        const maxTipCards = 5;    // else gets too tall.
+        const content = (strings.length > maxTipCards)
+          ? strings.slice(0, maxTipCards).join('<br>') + `<br>${strings.length - maxTipCards} more`
+          : strings.join('<br>');
+        instance.setContent(`<div style="text-align: center">${content}</div>`);
+      },
+      delay: 1000,
+      theme: 'dodgerblue',
+      arrow: false,
+      allowHTML: true
+    });
+  });
+}
+
 // When the DOM is ready, find our elements and start the game.
 
 window.addEventListener("DOMContentLoaded", event => {
+  game = new Game(gameDelegate);
+
   _loadElementsFromPage();
   _loadStoredRecord();
+  _addDiscardPileTips();
 
-  game = new Game(gameDelegate);
   game.start();
 });

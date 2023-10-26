@@ -200,10 +200,6 @@ section {
 
 .player-area {
   padding: 1em;
-  margin-bottom: 1em;
-  border: 1px solid #412a5b;
-  border-left-width: 0;
-  border-right-width: 0;
 }
 
 .player-area.active {
@@ -213,7 +209,20 @@ section {
 
 #human-area {
   margin-bottom: 0;
-  margin-top: 1em;
+  border-bottom: 2px solid rgba(0,0,0,0);
+}
+
+#human-area.active {
+  border-bottom: 2px solid #d1c270;
+}
+
+#cpu-area {
+  margin-top: 4px;
+  border-top: 2px solid rgba(0,0,0,0);
+}
+
+#cpu-area.active {
+  border-top: 2px solid #d1c270;
 }
 
 #new-game,
@@ -255,4 +264,9 @@ section {
     top: 100%;
     left: 0;
   }
+}
+
+.tippy-box[data-theme~='dodgerblue'] {
+  background-color: dodgerblue;
+  color: white;
 }

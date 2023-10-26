@@ -79,6 +79,10 @@ class Pile {
       a[i] = x;
     }
   }
+
+  toString() {
+    return this.cards.reverse().join(" ");
+  }
 }
 
 /**
