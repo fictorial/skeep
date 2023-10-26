@@ -58,6 +58,14 @@ browser window/tab.
 The CPU opponent employs very little strategy and is thus fairly easy to beat
 most of time.
 
+## Local Development
+
+```
+npx http-server -H ./no-cache-headers.json
+```
+
+Visit http://localhost:8080
+
 ## Author
 
 Brian Hammond <brian@fictorial.com>
