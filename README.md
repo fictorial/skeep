@@ -29,6 +29,9 @@ When no moves are possible in your turn, discard a card from your hand to one of
 another 5 immediately.  Discard piles do not require a sequence like the build
 piles require.
 
+You can long-press or long-click one of your discard piles to reveal the card
+underneath the top card (if there is one).
+
 ### Wilds
 
 `W` cards are *wild*.  A wild card can take any value.  Placing a `W` atop a 8
@@ -72,7 +75,7 @@ Brian Hammond <brian@fictorial.com>
 
 ## Copyright
 
-Copyright (C) 2019-2022 Fictorial LLC.  All Rights Reserved.
+Copyright (C) 2019-2023 Fictorial LLC.  All Rights Reserved.
 
 ## License
 
