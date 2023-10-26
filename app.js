@@ -9,7 +9,9 @@ let $humanDiscardPiles = [];
 let $cpuStockPile;
 let $humanStockPile;
 let $drawPile;
-let $title;
+let $appName;
+let $humanWins;
+let $cpuWins;
 let $newGame;
 let $humanTurn;
 let $cpuTurn;
@@ -17,9 +19,11 @@ let $humanArea;
 let $cpuArea;
 
 function _loadElementsFromPage() {
-  $title = document.getElementById("title");
+  $appName = document.getElementById("app-name");
 
   // CPU player
+
+  $cpuWins = document.getElementById("cpu-wins");
 
   for (let i = 0; i < 5; ++i)
     $cpuHand[i] = document.getElementById(`cpu-hand-${i}`);
@@ -30,6 +34,8 @@ function _loadElementsFromPage() {
   $cpuStockPile = document.getElementById("cpu-stock");
 
   // Human player
+
+  $humanWins = document.getElementById("human-wins");
 
   for (let i = 0; i < 5; ++i) {
     $humanHand[i] = document.getElementById(`human-hand-${i}`);
@@ -678,17 +684,46 @@ let gameDelegate = {
 
   gameDidEnd() {
     let text = game.winner.isHuman ? "YOU WIN! 🤘" : "I WON. 🐙";
-    $title.textContent = text;
-    animateCSS($title, "tada");
+    $appName.textContent = text;
+    animateCSS($appName, "tada");
 
     $humanTurn.classList.remove("active");
     $cpuTurn.classList.remove("active");
+
+    if (game.winner.isHuman) _humanDidWin();
+    else _cpuDidWin();
 
     _deselectAllCards();
 
     alert(text);
   }
 };
+
+function _loadStoredRecord() {
+  if (localStorage.getItem("record")) {
+    let record = JSON.parse(localStorage.getItem("record"));
+    $humanWins.textContent = record.humanWins;
+    $cpuWins.textContent = record.cpuWins;
+  } else {
+    localStorage.setItem("record", JSON.stringify({ humanWins: 0, cpuWins: 0 }));
+  }
+}
+
+function _withStoredRecord(callback) {
+  let record = JSON.parse(localStorage.getItem("record"));
+  callback(record);
+  localStorage.setItem("record", JSON.stringify(record));
+  $humanWins.textContent = record.humanWins;
+  $cpuWins.textContent = record.cpuWins;
+}
+
+function _humanDidWin() {
+  _withStoredRecord(record => record.humanWins++)
+}
+
+function _cpuDidWin() {
+  _withStoredRecord(record => record.cpuWins++)
+}
 
 function dragDidStart(ev) {
   if (_isCPUCurrent()) {
@@ -771,6 +806,7 @@ function _didDropOnDiscardPile(discardPileNumber, sourceId) {
 
 window.addEventListener("DOMContentLoaded", event => {
   _loadElementsFromPage();
+  _loadStoredRecord();
 
   game = new Game(gameDelegate);
   game.start();

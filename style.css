@@ -144,11 +144,24 @@ section {
 }
 
 #title {
-  color: rgba(255, 255, 255, 0.5);
   display: flex;
   justify-content: center;
   align-content: center;
   flex-direction: column;
+}
+
+#app-name {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+#record {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 2px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: x-small;
 }
 
 .turn-indicator-label {
