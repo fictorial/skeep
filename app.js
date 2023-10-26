@@ -596,6 +596,7 @@ let gameDelegate = {
 
   turnDidStart() {
     _deselectAllCards();
+    _hideDisablePileTips();
 
     // Change opacity so as not reflow for collapsing the space taken
     // that would occur with display: none for example.
@@ -619,6 +620,7 @@ let gameDelegate = {
 
   turnDidEnd() {
     _deselectAllCards();
+    _hideDisablePileTips();
   },
 
   // Cards were dealt in the model.  Let's let any animations
@@ -640,6 +642,8 @@ let gameDelegate = {
     setTimeout(() => {
       if (_isCPUCurrent()) _submitNextCPUAction();
     }, 1000);
+
+    if (_isHumanCurrent()) _hideDiscardPileTips();
   },
 
   didPlayHandCard({ buildPileNumber, handCardNumber }) {
@@ -650,6 +654,7 @@ let gameDelegate = {
     _deselectAllCards();
 
     if (_isCPUCurrent()) _submitNextCPUAction();
+    else _hideDiscardPileTips();
   },
 
   didPlayStockCard({ buildPileNumber }) {
@@ -658,6 +663,7 @@ let gameDelegate = {
     _deselectAllCards();
 
     if (_isCPUCurrent()) _submitNextCPUAction();
+    else _hideDiscardPileTips();
   },
 
   didPlayDiscardCard({ discardPileNumber, buildPileNumber }) {
@@ -666,20 +672,24 @@ let gameDelegate = {
     _deselectAllCards();
 
     if (_isCPUCurrent()) _submitNextCPUAction();
+    else _hideDiscardPileTips();
   },
 
   didDiscardHandCard({ handCardNumber, discardPileNumber }) {
     _syncCurrentDiscardPile(discardPileNumber);
     _syncCurrentHandCard(handCardNumber);
     _deselectAllCards();
+    if (_isHumanCurrent()) _hideDiscardPileTips();
   },
 
   didClearBuildPile(buildPileNumber) {
     setTimeout(() => _syncBuildPile(buildPileNumber), 1000);
+    if (_isHumanCurrent()) _hideDiscardPileTips();
   },
 
   didRecreateDrawPile() {
     _syncDrawPileBadge();
+    if (_isHumanCurrent()) _hideDiscardPileTips();
   },
 
   gameDidEnd() {
@@ -694,6 +704,7 @@ let gameDelegate = {
     else _cpuDidWin();
 
     _deselectAllCards();
+    _hideDiscardPileTips();
 
     alert(text);
   }
@@ -829,6 +840,10 @@ function _addDiscardPileTips() {
       allowHTML: true
     });
   });
+}
+
+function _hideDiscardPileTips() {
+  tippy.hideAll();
 }
 
 // When the DOM is ready, find our elements and start the game.
