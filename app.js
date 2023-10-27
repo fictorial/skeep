@@ -900,5 +900,11 @@ window.addEventListener("DOMContentLoaded", event => {
     });
   });
 
+  function setViewportHeight() {
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+  }
+  setViewportHeight();
+  window.addEventListener('resize', setViewportHeight);
+
   game.start();
 });
