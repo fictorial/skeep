@@ -20,7 +20,7 @@
 
   --player-area-background-color: #eee;
   --player-area-border-color: #999;
-  --player-area-shadow-color: #c956c766;
+  --player-area-shadow-color: rgba(0, 0, 0, 0.2);
 
   --card-empty-background-color: #ccc;
   --card-background-color: white;
@@ -38,6 +38,9 @@
   --badge-text-color: rgba(255, 255, 255, 0.9);
   --badge-border-color: white;
   --badge-border-width: 0;
+
+  --build-piles-card-background-color: #eee;
+  --build-piles-card-draw-background-color: #ccc;
 
   --help-background-color: rgba(0, 0, 0, 0.6);
   --help-text-color: rgba(255, 255, 255, 0.9);
@@ -69,9 +72,10 @@
 
     --player-area-background-color: rgba(0,0,0,0.2);
     --player-area-border-color: rgba(255,255,255,0.3);
+    --player-area-shadow-color: #9654e0;
 
     --card-empty-background-color: #4e1d85;
-    --card-background-color: rgba(0,0,0,0.4);
+    --card-background-color: #250e3e;
     --card-border-color: #888;
     --card-text-color: #bbb;
 
@@ -86,6 +90,9 @@
     --badge-text-color: rgba(255, 255, 255, 0.9);
     --badge-border-color: #777;
     --badge-border-width: 0;
+
+    --build-piles-card-background-color: #eeeeee78;
+    --build-piles-card-draw-background-color: #8445cb;
 
     --help-background-color: rgba(255, 255, 255, 0.1);
     --help-text-color: rgba(255, 255, 255, 0.9);
@@ -237,17 +244,27 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+
+  gap: 2rem;
 }
 
 @media (min-height: 1000px) {
   #board {
-      gap: 4rem;
+      gap: 6rem;
   }
 
   .player-area,
   #build-piles {
       transform: scale(1.25);
   }
+}
+
+#build-piles .card {
+  background-color: var(--build-piles-card-background-color);
+}
+
+#build-piles .card.draw {
+  background-color: var(--build-piles-card-draw-background-color) !important;
 }
 
 .help {
