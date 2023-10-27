@@ -1,8 +1,8 @@
 {
   "name": "Skeep",
   "short_name": "Skeep",
-  "theme_color": "#41285c",
-  "background_color": "#41285c",
+  "theme_color": "#4e1d85",
+  "background_color": "#4e1d85",
   "display": "standalone",
   "orientation": "portrait",
   "Scope": "/",

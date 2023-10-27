@@ -18,6 +18,9 @@ let $appName;
 let $humanWins;
 let $cpuWins;
 let $newGame;
+let $humanPlayerArea;
+let $cpuPlayerArea;
+let $help;
 
 let longPressTimer;
 let didLongPress = false;
@@ -25,9 +28,11 @@ let animationDuration = 600;
 
 function _loadElementsFromPage() {
   $appName = document.getElementById("app-name");
+  $help = document.getElementById("help");
 
   // CPU player
 
+  $cpuPlayerArea = document.getElementById("cpu-player-area");
   $cpuWins = document.getElementById("cpu-wins");
 
   for (let i = 0; i < 5; ++i)
@@ -43,6 +48,7 @@ function _loadElementsFromPage() {
 
   // Human player
 
+  $humanPlayerArea = document.getElementById("human-player-area");
   $humanWins = document.getElementById("human-wins");
 
   $humanHandRow = document.getElementById("human-hand");
@@ -88,13 +94,6 @@ function _loadElementsFromPage() {
   $newGame.addEventListener("click", _didClickNewGame);
 }
 
-function toggleDisplay($el) {
-  const current = window.getComputedStyle($el).display;
-  const next = current === "block" ? "none" : "block";
-  $el.style.display = next;
-  return next;
-}
-
 function animateCSS($el, animationName, callback) {
   const $node = $el || document.querySelector($el);
   $node.classList.add('animated', animationName);
@@ -110,10 +109,20 @@ function animateCSS($el, animationName, callback) {
 }
 
 function _didClickHelp() {
-  const isShown = toggleDisplay(document.getElementById("help"));
+  if ($help.classList.contains("hidden")) {
+    $help.classList.remove("hidden");
 
-  for (let $el of document.getElementsByClassName("help-label"))
-    toggleDisplay($el);
+    document.querySelectorAll('.help-label').forEach(label => {
+      label.classList.remove("hidden");
+    });
+  }
+  else {
+    $help.classList.add("hidden");
+
+    document.querySelectorAll('.help-label').forEach(label => {
+      label.classList.add("hidden");
+    });
+  }
 
   document.body.classList.toggle("overflow");
 }
@@ -618,19 +627,12 @@ let gameDelegate = {
   turnDidStart() {
     _deselectAllCards();
 
-
     if (_isCPUCurrent()) {
-      $cpuHandRow.classList.add("active");
-      $cpuDiscardRow.classList.add("active");
-
-      $humanHandRow.classList.remove("active");
-      $humanDiscardRow.classList.remove("active");
+      $cpuPlayerArea.classList.add("active");
+      $humanPlayerArea.classList.remove("active");
     } else {
-      $humanHandRow.classList.add("active");
-      $humanDiscardRow.classList.add("active");
-
-      $cpuHandRow.classList.remove("active");
-      $cpuDiscardRow.classList.remove("active");
+      $humanPlayerArea.classList.add("active");
+      $cpuPlayerArea.classList.remove("active");
     }
 
     // Wait for the animation to finish before dealing cards.
@@ -853,20 +855,23 @@ function _showDiscardPileContents(index) {
 
   if (discardPile.isEmpty || discardPile.cards.length == 1) return false;
 
-  $discardPileContents.innerHTML = discardPile.cards[1].toString();
+  $discardPileContents.innerHTML = discardPile.cards.at(-2).toString();
 
   const $pile = document.getElementById(`human-discard-${index}`);
   $pile.style.zIndex = 2;
 
   // Move the discard pile contents to the exact same position as $pile
 
-  const rect = $pile.getBoundingClientRect();
-  $discardPileContents.style.left = `${rect.left}px`;
-  $discardPileContents.style.top = `${rect.top}px`;
-  $discardPileContents.style.width = `${rect.width}px`;
-  $discardPileContents.style.height = `${rect.height}px`;
-  $discardPileContents.style.zIndex = 1;
+  $discardPileContents.parentNode.removeChild($discardPileContents);
+
+  const pileStyle = window.getComputedStyle($pile);
+  $discardPileContents.style.left = `${pileStyle.left}px`;
+  $discardPileContents.style.top = `${pileStyle.top}px`;
+  $discardPileContents.style.width = `${pileStyle.width}px`;
+  $discardPileContents.style.height = `${pileStyle.height}px`;
   $discardPileContents.classList.remove('hidden');
+
+  $pile.parentNode.appendChild($discardPileContents);
 
   // Slide up since on mobile the user's hand is below.
 

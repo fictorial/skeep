@@ -34,8 +34,13 @@ class Pile {
     this.didPushCard(card);
   }
 
-  willPushCard(card) {}
-  didPushCard(card) {}
+  willPushCard(card) {
+    console.log('before push', JSON.stringify(this.cards));
+  }
+
+  didPushCard(card) {
+    console.log('after push', JSON.stringify(this.cards));
+  }
 
   /**
    * Remove the card at the top of the pile and return it.
