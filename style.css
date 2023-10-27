@@ -276,22 +276,18 @@ body.overflow {
   margin: 0.25rem auto;
   display: flex;
   flex-direction: column;
-  justify-content: stretch;
+  justify-content: center;
   align-items: stretch;
   z-index: 999;
   position: relative;
 }
 
 #board {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: stretch;
+  gap: 1rem;
 }
 
 body.overflow #board {
