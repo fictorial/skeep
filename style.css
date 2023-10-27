@@ -139,6 +139,7 @@ html {
 
 body {
   overflow: hidden;
+  margin: 2rem;
 }
 
 p {
@@ -232,8 +233,6 @@ button {
   left: 50%;
 
   transform: translate(-50%, -50%);
-
-  width: 90%;
 
   background-color: var(--board-background-color);
 
