@@ -129,7 +129,7 @@ html {
 
   height: 100vh;
 
-  font-size: clamp(10px, 1.1vmax, 1.4vmax);
+  font-size: clamp(10px, 1vmax, 1.1vmax);
 
   -webkit-user-select: none;
   -moz-user-select: -moz-none;
@@ -380,8 +380,8 @@ body.overflow .player-area {
   top: -0.75rem;
   right: -0.75rem;
 
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 1.6em;
+  height: 1.6em;
 
   display: flex;
   justify-content: center;
@@ -397,7 +397,7 @@ body.overflow .player-area {
 
   box-shadow: 0 0.15rem 0.5rem 0 var(--card-shadow-color);
 
-  font-size: 0.95rem;
+  font-size: 0.5em;
   font-weight: 600;
 }
 
