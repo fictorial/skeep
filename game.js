@@ -275,7 +275,7 @@ class Game {
    * - `.gameDidStart()`
    * - `.gameDidEnd()`
    * - `.turnDidStart() -> delayBeforeDealingNext`
-   * - `.turnDidEnd()`
+   * - `.turnDidEnd() -> delayBeforeStartingNextTurn`
    * - `.didDealCards(cardsDrawn, handCardNumbers)`
    * - `.didPlayHandCard(action)`
    * - `.didPlayStockCard(action)`
@@ -428,14 +428,26 @@ class Game {
   _endCurrentTurn() {
     console.log("game._endCurrentTurn");
 
-    if (this.delegate) this.delegate.turnDidEnd();
+    let delay = 0;
 
-    let nextPlayer =
-      this.currentTurn.player === this.humanPlayer
-        ? this.cpuPlayer
-        : this.humanPlayer;
+    if (this.delegate) {
+      let delegateDelay = this.delegate.turnDidEnd();
 
-    this._addTurn(new Turn(nextPlayer));
+      console.log('delegate wants to wait this long before starting next turn', delegateDelay);
+
+      if (!isNaN(delegateDelay)) {
+        delay = delegateDelay;
+      }
+    }
+
+    setTimeout(() => {
+      let nextPlayer =
+        this.currentTurn.player === this.humanPlayer
+          ? this.cpuPlayer
+          : this.humanPlayer;
+
+      this._addTurn(new Turn(nextPlayer));
+    }, delay);
   }
 
   /**

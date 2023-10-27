@@ -64,10 +64,10 @@ most of time.
 ## Local Development
 
 ```
-npx http-server -H ./no-cache-headers.json
+python -m http.server
 ```
 
-Visit http://localhost:8080
+Visit http://localhost:8000
 
 ## Author
 

@@ -6,7 +6,7 @@
     <title>Skeep</title>
     <link rel="canonical" href="https://skeep.glitch.me/">
     <link rel="stylesheet" href="style.css" />
-    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,600" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#41285c">
@@ -36,6 +36,7 @@
       </div>
       <button id="new-game">＊</button>
     </div>
+    <div id="main">
     <div id="board">
       <div class="help" id="help">
         <p>
@@ -96,6 +97,7 @@
         <div class="card human" id="human-hand-3" draggable="true" ondragstart="dragDidStart(event)"></div>
         <div class="card human" id="human-hand-4" draggable="true" ondragstart="dragDidStart(event)"></div>
       </div>
+    </div>
     </div>
     <script src="game.js"></script>
     <script src="app.js"></script>

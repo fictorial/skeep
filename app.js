@@ -21,6 +21,7 @@ let $newGame;
 
 let longPressTimer;
 let didLongPress = false;
+let animationDuration = 600;
 
 function _loadElementsFromPage() {
   $appName = document.getElementById("app-name");
@@ -617,35 +618,29 @@ let gameDelegate = {
   turnDidStart() {
     _deselectAllCards();
 
-    $humanHandRow.classList.remove("active");
-    $humanDiscardRow.classList.remove("active");
-
-    $cpuHandRow.classList.remove("active");
-    $cpuDiscardRow.classList.remove("active");
 
     if (_isCPUCurrent()) {
       $cpuHandRow.classList.add("active");
       $cpuDiscardRow.classList.add("active");
 
-      animateCSS($cpuHandRow, "flash");
-      animateCSS($cpuDiscardRow, "flash");
+      $humanHandRow.classList.remove("active");
+      $humanDiscardRow.classList.remove("active");
     } else {
       $humanHandRow.classList.add("active");
       $humanDiscardRow.classList.add("active");
 
-      animateCSS($humanHandRow, "flash");
-      animateCSS($humanDiscardRow, "flash");
+      $cpuHandRow.classList.remove("active");
+      $cpuDiscardRow.classList.remove("active");
     }
 
     // Wait for the animation to finish before dealing cards.
 
-    const rootStyles = window.getComputedStyle(document.documentElement);
-    const delay = rootStyles.getPropertyValue('--animate-duration').trim();
-    return Math.round(parseFloat(delay) * 1.6);
+    return animationDuration * 1.6;
   },
 
   turnDidEnd() {
     _deselectAllCards();
+    return animationDuration * 1.6;
   },
 
   // Cards were dealt in the model.  Let's let any animations
@@ -760,11 +755,6 @@ function dragDidStart(ev) {
     return;
   }
 
-  //if (ev.target.getAnimations().length > 0) {
-  //  ev.preventDefault();
-  //  return;
-  //}
-
   ev.dataTransfer.setData("text/plain", ev.target.id);
   ev.dataTransfer.dropEffect = "move";
   console.log("drag: started dragging", ev.target.id);
@@ -873,6 +863,8 @@ function _showDiscardPileContents(index) {
   const rect = $pile.getBoundingClientRect();
   $discardPileContents.style.left = `${rect.left}px`;
   $discardPileContents.style.top = `${rect.top}px`;
+  $discardPileContents.style.width = `${rect.width}px`;
+  $discardPileContents.style.height = `${rect.height}px`;
   $discardPileContents.style.zIndex = 1;
   $discardPileContents.classList.remove('hidden');
 
@@ -901,6 +893,12 @@ window.addEventListener("DOMContentLoaded", event => {
 
   _loadElementsFromPage();
   _loadStoredRecord();
+
+  document.querySelectorAll('.card').forEach(element => {
+     element.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+  });
 
   game.start();
 });

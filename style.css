@@ -1,5 +1,43 @@
 :root {
+  --active-border-width: 2px;
+  --active-color: #fdc229;
+  --active-text-color: rgba(0,0,0,0.8);
+
   --animate-duration: 600ms;
+
+  --background-dark-transparent: rgba(0,0,0,0.2);
+  --background-dark: #4e1d85;
+  --background-light: #9e74cf5c;
+
+  --badge-background-color: #b598d7;
+  --badge-text-color: rgba(0,0,0,0.5);
+
+  --build-pile-card-border-color: rgba(255,255,255,0.4);
+  --build-pile-empty-color: #2b193d00;
+  --build-piles-background-color: #3e136f00;
+
+  --button-color-active: #cb9c22;
+  --button-color: #ba93e9;
+
+  --card-background-color: #6e34af;
+  --card-empty-background-color: rgba(0,0,0,0.2);
+  --card-border-color: rgba(255,255,255,0.4);
+  --card-shadow-color: #18052380;
+  --card-selected-background-color: #d976d622;
+  --card-selected-border-color: #d976d6;
+
+  --card-row-background-color: #5d2c94;
+  --card-row-border-color: rgba(255,255,255,0.2);
+  --card-row-scrollbar-color: rgba(255,255,255,0.2);
+
+  --draw-stock-card-color: #2e2538ba;
+
+  --help-background-color: rgba(0,0,0,0.2);
+
+  --text-color: rgba(255, 255, 255, 0.6);
+  --text-color-dark: #ccc;
+  --text-color-darker: rgba(255, 255, 255, 0.5);
+  --text-color-light: rgba(255, 255, 255, 0.75);
 }
 
 * {
@@ -20,7 +58,7 @@
 
 body,
 html {
-  background-color: #412a5b;
+  background-color: var(--background-dark);
   height: 100%;
 
   /* disable selection */
@@ -40,14 +78,19 @@ body.overflow {
   overflow: auto;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .help {
   display: none;
   padding: 1em;
-  background-color: #222;
-  color: #ccc;
+  background-color: var(--help-background-color);
+  color: var(--text-color-dark);
   border: 1px solid #666;
   border-radius: 0.5rem;
   font-size: small;
+  margin: 0.5rem 0;
 }
 
 .help p,
@@ -64,60 +107,51 @@ body.overflow {
 
 .help-label {
   display: none;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text-color);
   text-transform: uppercase;
   font-size: 0.8em;
   font-weight: normal;
   text-align: center;
-  transform: translateY(1rem);
-  background: #222;
-  color: #ccc;
+  background: var(--help-background-color);
+  color: var(--text-color-dark);
   border-radius: 0.25em;
   padding: 0.25rem 0.5rem;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 2px 5px 0 var(--card-shadow-color);
 }
 
 .badge {
   position: relative;
 }
 
-.badge[data-badge]:after {
+.badge:after {
   content: attr(data-badge);
   position: absolute;
-  top: -1em;
-  right: -1em;
-  font-size: 0.6em;
-  width: 2em;
-  height: 2em;
-  line-height: 2em;
+  top: -0.7em;
+  right: -0.7em;
+  font-size: 0.7em;
+  width: 1.7em;
+  height: 1.7em;
+  line-height: 1.7em;
   border-radius: 50%;
   text-align: center;
-  background-color: #ffffff;
-  color: rgba(0, 0, 0, 0.73);
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
+  background-color: var(--badge-background-color);
+  color: var(--badge-text-color);
+  box-shadow: 0 2px 5px 0 var(--card-shadow-color);
+  z-index: 1;
 }
 
-.turn-indicator-label {
-  text-align: center;
-  text-transform: uppercase;
-  opacity: 0;
-  padding: 0.25em;
-  font-size: 0.9em;
-}
-
-.turn-indicator-label.active {
-  opacity: 1;
+.active .badge:after {
+  background-color: var(--active-color);
+  color: var(--active-text-color);
 }
 
 .card-row {
-  margin: 0.5rem;
   padding: 1rem;
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 0.25rem;
-  background: rgba(255,255,255,0.1);
+  border-radius: 0.5rem;
+  background: var(--card-row-background-color);
   flex: 1;
 
   display: flex;
@@ -125,14 +159,16 @@ body.overflow {
   flex-wrap: no-wrap;
   justify-content: space-around;
   align-items: center;
-  gap: 1rem;
 
-  overflow: scroll;
+  /*
+  overflow: auto;
+  scrollbar-color: var(--card-row-scrollbar-color) transparent;
+  scrollbar-width: thin;
+  */
 }
 
-body.overflow .card-row {
-  border-color: #222;
-  border-width: 0.25rem;
+.active {
+  opacity: 1 !important;
 }
 
 .card {
@@ -141,21 +177,28 @@ body.overflow .card-row {
   align-items: center;
   aspect-ratio: 9/16;
   font-size: 3vmax;
-  height: 80%;
-  background-color: #76559c;
-  color: rgba(255, 255, 255, 0.6);
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.25em;
+  background-color: var(--card-background-color);
+  color: var(--text-color);
   border-radius: 0.1em;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
-  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow: 0 2px 5px 0 var(--card-shadow-color);
+  border: 1px solid var(--card-border-color);
+  height: 90%;
+  width: calc(100% / 7);
+  -webkit-touch-callout: none;
+  touch-action: none;
 }
 
 .card.empty {
   opacity: 0.5;
+  background-color: var(--card-empty-background-color);
 }
 
 .card.selected {
-  border: 2px solid #d976d6;
-  background-color: #d976d622;
+  border: 2px solid var(--card-selected-border-color);
+  background-color: var(--card-selected-background-color);
 }
 
 .build {
@@ -168,16 +211,15 @@ body.overflow .card-row {
 
 .draw,
 .stock {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--draw-stock-card-color);
 }
-
 
 #new-game,
 #toggle-help {
   min-width: 44px;
   border: none;
   background-color: transparent;
-  color: #bab1c5;
+  color: var(--button-color);
   cursor: pointer;
   font-size: 1em;
   padding: 0 0.5em;
@@ -185,7 +227,7 @@ body.overflow .card-row {
 
 #new-game:active,
 #toggle-help:active {
-  color: #fdc229;
+  color: var(--button-color-active);
 }
 
 #controls {
@@ -195,8 +237,8 @@ body.overflow .card-row {
   align-self: stretch;
   z-index: 1;
   padding: 0.25rem 0.5rem;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
-  background-color: rgba(0,0,0,0.2);
+  box-shadow: 0 2px 5px 0 var(--card-shadow-color);
+  background-color: var(--background-dark-transparent);
   height: 3rem;
 }
 
@@ -220,7 +262,7 @@ body.overflow .card-row {
 }
 
 #app-name {
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--text-color-light);
 }
 
 #record {
@@ -229,52 +271,46 @@ body.overflow .card-row {
   justify-content: space-around;
   align-items: center;
   gap: 2px;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--text-color-darker);
+}
+
+#main {
+  height: calc(100% - 3rem);
+  max-width: 768px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
 }
 
 #board {
-  position: absolute;
-  top: 3rem;
-  left: 0;
-  width: 100%;
-  height: calc(100% - 3rem);
+  padding: 1rem;
+  min-width: 80%;
+  min-height: 80%;
 
   display: flex;
   flex-direction: column;
-  justify-content: stretch;
+  justify-content: center;
   align-items: stretch;
-
-  padding: 1rem;
 }
 
 body.overflow #board {
   height: calc(100% + 10rem);
 }
 
-#cpu-turn {
-  color: #79d5ea;
-  display: none;
-}
-
-#human-turn {
-  color: #fdc229;
-}
-
-#cpu-stock[data-badge]:after {
-  background-color: #b598d7;
-}
-
-#human-stock[data-badge]:after {
-  background-color: #fdc229;
-  color: black;
-}
-
 #build-piles {
-  background-color: #a38caf78;
+  background-color: var(--build-piles-background-color);
+  border: none;
+  margin: 1rem 0;
+}
+
+#build-piles .card {
+  border-color: var(--build-piles-card-border-color);
 }
 
 #build-piles .card.empty {
-  background: #fca331;
+  background: var(--build-pile-empty-color);
 }
 
 #discard-pile-contents {
@@ -282,37 +318,27 @@ body.overflow #board {
   margin: 0;
 }
 
-.hidden {
-  display: none !important;
+#cpu-hand {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
-@keyframes reveal {
-  from {
-    transform: translateX(0) translateY(0) rotateZ(0);
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
-  }
-  to {
-    transform: translateX(-70%) translateY(-80%) rotateZ(-10deg);
-    box-shadow: 0 10px 15px 10px rgba(0,0,0,0.1);
-  }
+#cpu-discard {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
-@keyframes reveal-undo {
-  from {
-    transform: translateX(-70%) translateY(-80%) rotateZ(-10deg);
-    box-shadow: 0 10px 15px 10px rgba(0,0,0,0.1);
-  }
-  to {
-    transform: translateX(0) translateY(0) rotateZ(0);
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
-  }
+#human-hand {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
-.reveal {
-  animation: reveal 0.5s forwards;
+#human-discard {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
-.reveal-undo {
-  animation: reveal-undo 0.5s forwards;
+#cpu-hand, #cpu-discard, #human-hand, #human-discard {
+  opacity: 0.4;
 }
 
