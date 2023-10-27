@@ -1,12 +1,5 @@
-* :root {
+:root {
   --animate-duration: 600ms;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * :root {
-    animation: none !important;
-    transition: none !important;
-  }
 }
 
 * {
@@ -15,7 +8,14 @@
   padding: 0;
   font-family: "Fira Sans", sans-serif;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 body,
@@ -32,62 +32,22 @@ html {
   font-size: 14px;
 }
 
-#main {
-  display: flex;
-  flex-direction: column;
-  justify-content: stretch;
-  align-content: stretch;
+body {
+  overflow: hidden;
 }
 
-section {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding: 0.5em 0;
-}
-
-.card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: calc(44px + 3vh);
-  width: calc(2 / 3 * (44px + 3vh));
-  margin: 0 calc(2px + 1vmin);
-  font-size: calc(16px + 1.6vh);
-  background-color: #76559c;
-  color: rgba(255, 255, 255, 0.6);
-  border-radius: 0.1em;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
-  border: 1px solid rgba(255,255,255,0.4);
-}
-
-.card.empty {
-  opacity: 0.5;
-}
-
-.card.selected {
-  border: 2px solid #d976d6;
-  background-color: #d976d622;
-}
-
-.build {
-  cursor: pointer;
-}
-
-.human {
-  cursor: pointer;
-}
-
-.draw,
-.stock {
-  background-color: rgba(0, 0, 0, 0.3);
+body.overflow {
+  overflow: auto;
 }
 
 .help {
   display: none;
   padding: 1em;
-  background-color: rgba(0,0,0,0.2);
-  color: rgba(255,255,255,0.5);
+  background-color: #222;
+  color: #ccc;
+  border: 1px solid #666;
+  border-radius: 0.5rem;
+  font-size: small;
 }
 
 .help p,
@@ -109,8 +69,15 @@ section {
   font-size: 0.8em;
   font-weight: normal;
   text-align: center;
-  margin-top: 1em;
-  margin-bottom: 0.5em;
+  transform: translateY(1rem);
+  background: #222;
+  color: #ccc;
+  border-radius: 0.25em;
+  padding: 0.25rem 0.5rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
 }
 
 .badge {
@@ -122,7 +89,7 @@ section {
   position: absolute;
   top: -1em;
   right: -1em;
-  font-size: 0.45em;
+  font-size: 0.6em;
   width: 2em;
   height: 2em;
   line-height: 2em;
@@ -133,13 +100,92 @@ section {
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
 }
 
-#cpu-stock[data-badge]:after {
-  background-color: #b598d7;
+.turn-indicator-label {
+  text-align: center;
+  text-transform: uppercase;
+  opacity: 0;
+  padding: 0.25em;
+  font-size: 0.9em;
 }
 
-#human-stock[data-badge]:after {
-  background-color: #fdc229;
-  color: black;
+.turn-indicator-label.active {
+  opacity: 1;
+}
+
+.card-row {
+  margin: 0.5rem;
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 0.25rem;
+  background: rgba(255,255,255,0.1);
+  flex: 1;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: no-wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1rem;
+
+  overflow: scroll;
+}
+
+body.overflow .card-row {
+  border-color: #222;
+  border-width: 0.25rem;
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 9/16;
+  font-size: 3vmax;
+  height: 80%;
+  background-color: #76559c;
+  color: rgba(255, 255, 255, 0.6);
+  border-radius: 0.1em;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+.card.empty {
+  opacity: 0.5;
+}
+
+.card.selected {
+  border: 2px solid #d976d6;
+  background-color: #d976d622;
+}
+
+.build {
+  cursor: pointer;
+}
+
+.card.human {
+  cursor: pointer;
+}
+
+.draw,
+.stock {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+#new-game,
+#toggle-help {
+  min-width: 44px;
+  border: none;
+  background-color: transparent;
+  color: #bab1c5;
+  cursor: pointer;
+  font-size: 1em;
+  padding: 0 0.5em;
+}
+
+#new-game:active,
+#toggle-help:active {
+  color: #fdc229;
 }
 
 #controls {
@@ -151,6 +197,7 @@ section {
   padding: 0.25rem 0.5rem;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
   background-color: rgba(0,0,0,0.2);
+  height: 3rem;
 }
 
 #controls button {
@@ -163,9 +210,6 @@ section {
   #controls button:hover {
     background-color: #ffffff22;
   }
-}
-
-#board {
 }
 
 #title {
@@ -188,16 +232,23 @@ section {
   color: rgba(255, 255, 255, 0.5);
 }
 
-.turn-indicator-label {
-  text-align: center;
-  text-transform: uppercase;
-  opacity: 0;
-  padding: 0.25em;
-  font-size: 0.9em;
+#board {
+  position: absolute;
+  top: 3rem;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 3rem);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+
+  padding: 1rem;
 }
 
-.turn-indicator-label.active {
-  opacity: 1;
+body.overflow #board {
+  height: calc(100% + 10rem);
 }
 
 #cpu-turn {
@@ -209,72 +260,21 @@ section {
   color: #fdc229;
 }
 
-.player-area {
-  padding: 1em;
+#cpu-stock[data-badge]:after {
+  background-color: #b598d7;
 }
 
-.player-area.active {
-  border-color: #d1c270;
-  background-color: #7c00e230;
-}
-
-#human-area {
-  margin-bottom: 0;
-  border-bottom: 2px solid rgba(0,0,0,0);
-}
-
-#human-area.active {
-  border-bottom: 2px solid #d1c270;
-}
-
-#cpu-area {
-  margin-top: 4px;
-  border-top: 2px solid rgba(0,0,0,0);
-}
-
-#cpu-area.active {
-  border-top: 2px solid #d1c270;
-}
-
-#new-game,
-#toggle-help {
-  min-width: 44px;
-  border: none;
-  background-color: transparent;
-  color: #bab1c5;
-  cursor: pointer;
-  font-size: 1em;
-  padding: 0 0.5em;
-}
-
-#new-game:active,
-#toggle-help:active {
-  color: #fdc229;
+#human-stock[data-badge]:after {
+  background-color: #fdc229;
+  color: black;
 }
 
 #build-piles {
-  padding: 2em 0;
   background-color: #a38caf78;
 }
 
 #build-piles .card.empty {
   background: #fca331;
-}
-
-/* I do not feel like dealing with a landscape orientation on mobile web for now.
-   Thus, if the screen is small and in landscape, show the normal portrait orientation
-   but rotated as to give the user a hint that landscape isn't really supported. */
-
-@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
-  html {
-    transform: rotate(-90deg);
-    transform-origin: left top;
-    width: 100vh;
-    overflow-x: hidden;
-    position: absolute;
-    top: 100%;
-    left: 0;
-  }
 }
 
 #discard-pile-contents {
@@ -315,3 +315,4 @@ section {
 .reveal-undo {
   animation: reveal-undo 0.5s forwards;
 }
+

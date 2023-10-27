@@ -2,8 +2,12 @@ let game;
 
 let $moveSource;
 let $buildPiles = [];
+let $cpuHandRow;
+let $cpuDiscardRow;
 let $cpuHand = [];
 let $humanHand = [];
+let $humanHandRow;
+let $humanDiscardRow;
 let $cpuDiscardPiles = [];
 let $humanDiscardPiles = [];
 let $discardPileContents;
@@ -14,10 +18,6 @@ let $appName;
 let $humanWins;
 let $cpuWins;
 let $newGame;
-let $humanTurn;
-let $cpuTurn;
-let $humanArea;
-let $cpuArea;
 
 let longPressTimer;
 let didLongPress = false;
@@ -37,9 +37,15 @@ function _loadElementsFromPage() {
 
   $cpuStockPile = document.getElementById("cpu-stock");
 
+  $cpuHandRow = document.getElementById("cpu-hand");
+  $cpuDiscardRow = document.getElementById("cpu-discard");
+
   // Human player
 
   $humanWins = document.getElementById("human-wins");
+
+  $humanHandRow = document.getElementById("human-hand");
+  $humanDiscardRow = document.getElementById("human-discard");
 
   for (let i = 0; i < 5; ++i) {
     $humanHand[i] = document.getElementById(`human-hand-${i}`);
@@ -79,17 +85,13 @@ function _loadElementsFromPage() {
 
   $newGame = document.getElementById("new-game");
   $newGame.addEventListener("click", _didClickNewGame);
-
-  $humanTurn = document.getElementById("human-turn");
-  $cpuTurn = document.getElementById("cpu-turn");
-
-  $humanArea = document.getElementById("human-area");
-  $cpuArea = document.getElementById("cpu-area");
 }
 
 function toggleDisplay($el) {
-  $el.style.display =
-    window.getComputedStyle($el).display === "block" ? "none" : "block";
+  const current = window.getComputedStyle($el).display;
+  const next = current === "block" ? "none" : "block";
+  $el.style.display = next;
+  return next;
 }
 
 function animateCSS($el, animationName, callback) {
@@ -107,10 +109,12 @@ function animateCSS($el, animationName, callback) {
 }
 
 function _didClickHelp() {
-  toggleDisplay(document.getElementById("help"));
+  const isShown = toggleDisplay(document.getElementById("help"));
 
   for (let $el of document.getElementsByClassName("help-label"))
     toggleDisplay($el);
+
+  document.body.classList.toggle("overflow");
 }
 
 function _didClickNewGame() {
@@ -613,24 +617,31 @@ let gameDelegate = {
   turnDidStart() {
     _deselectAllCards();
 
-    // Change opacity so as not reflow for collapsing the space taken
-    // that would occur with display: none for example.
+    $humanHandRow.classList.remove("active");
+    $humanDiscardRow.classList.remove("active");
 
-    $humanArea.classList.remove("active");
-    $cpuArea.classList.remove("active");
-
-    $humanTurn.classList.remove("active");
-    $cpuTurn.classList.remove("active");
+    $cpuHandRow.classList.remove("active");
+    $cpuDiscardRow.classList.remove("active");
 
     if (_isCPUCurrent()) {
-      $cpuArea.classList.add("active");
-      $cpuTurn.classList.add("active");
-      animateCSS($cpuTurn, "flash");
+      $cpuHandRow.classList.add("active");
+      $cpuDiscardRow.classList.add("active");
+
+      animateCSS($cpuHandRow, "flash");
+      animateCSS($cpuDiscardRow, "flash");
     } else {
-      $humanArea.classList.add("active");
-      $humanTurn.classList.add("active");
-      animateCSS($humanTurn, "flash");
+      $humanHandRow.classList.add("active");
+      $humanDiscardRow.classList.add("active");
+
+      animateCSS($humanHandRow, "flash");
+      animateCSS($humanDiscardRow, "flash");
     }
+
+    // Wait for the animation to finish before dealing cards.
+
+    const rootStyles = window.getComputedStyle(document.documentElement);
+    const delay = rootStyles.getPropertyValue('--animate-duration').trim();
+    return Math.round(parseFloat(delay) * 1.6);
   },
 
   turnDidEnd() {
@@ -704,8 +715,8 @@ let gameDelegate = {
     $appName.textContent = text;
     animateCSS($appName, "tada");
 
-    $humanTurn.classList.remove("active");
-    $cpuTurn.classList.remove("active");
+    $humanHandRow.classList.remove("active");
+    $cpuHandRow.classList.remove("active");
 
     if (game.winner.isHuman) _humanDidWin();
     else _cpuDidWin();

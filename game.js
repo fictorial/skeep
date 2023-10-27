@@ -400,8 +400,20 @@ class Game {
 
   _addTurn(turn) {
     this.turns.push(turn);
-    if (this.delegate) this.delegate.turnDidStart();
-    this._dealCards();
+
+    let delay = 0;
+
+    if (this.delegate) {
+      let delegateDelay = this.delegate.turnDidStart();
+
+      console.log('delegate wants to wait this long before dealing cards', delegateDelay);
+
+      if (!isNaN(delegateDelay)) {
+        delay = delegateDelay;
+      }
+    }
+
+    setTimeout(() => this._dealCards(), delay);
   }
 
   _dealCards() {
