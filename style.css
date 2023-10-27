@@ -149,7 +149,7 @@ body.overflow {
 }
 
 .card-row {
-  padding: 1rem;
+  padding: 0 0.25rem;
   border-radius: 0.5rem;
   background: var(--card-row-background-color);
   flex: 1;
@@ -159,13 +159,7 @@ body.overflow {
   flex-wrap: no-wrap;
   justify-content: space-around;
   align-items: center;
-  gap: 1ch;
-
-  /*
-  overflow: auto;
-  scrollbar-color: var(--card-row-scrollbar-color) transparent;
-  scrollbar-width: thin;
-  */
+  gap: 0.25rem;
 }
 
 .active {
@@ -278,11 +272,12 @@ body.overflow {
 #main {
   height: calc(100vh); /* fallback */
   height: calc(var(--vh, 1vh) * 100 - 3rem);
-  max-width: 720px;
-  margin: 0 auto;
+  max-width: 700px;
+  margin: 0.25rem auto;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
   z-index: 999;
   position: relative;
 }
@@ -293,10 +288,9 @@ body.overflow {
   left: 0;
   width: 100%;
   height: 100%;
-  padding: 0.5rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: stretch;
 }
 
