@@ -264,6 +264,8 @@ button {
 
 body.overflow .player-area {
   opacity: 1;
+
+  box-shadow: none;
 }
 
 .card-row {
@@ -305,10 +307,10 @@ body.overflow .player-area {
 }
 
 .card.selected {
-  background-color: var(--card-selected-background-color);
-  color: var(--card-selected-text-color);
+  background-color: var(--card-selected-background-color) !important;
+  color: var(--card-selected-text-color) !important;
 
-  border-color: var(--card-selected-border-color);
+  border-color: var(--card-selected-border-color) !important;
 }
 
 .card.empty {
@@ -352,5 +354,9 @@ body.overflow .player-area {
 #discard-pile-contents {
   position: absolute;
   margin: 0;
+}
+
+#build-piles-area {
+    opacity: 1;
 }
 
