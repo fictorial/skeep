@@ -168,6 +168,9 @@ button {
   transform: translateX(-50%);
 
   font-size: small;
+
+  display: flex;
+  flex-direction: row;
 }
 
 #app-name {
@@ -183,6 +186,14 @@ button {
   align-items: center;
 
   opacity: 0.5;
+}
+
+#record:before {
+  content: "(";
+}
+
+#record:after {
+  content: ")";
 }
 
 #board {
