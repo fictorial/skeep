@@ -110,8 +110,8 @@ header, #controls, #record {
     transform: scale(1);
 }
 
-#cpu-player-area:not(.active),
-#human-player-area:not(.active) {
+body:not(.overflow) #cpu-player-area:not(.active),
+body:not(.overflow) #human-player-area:not(.active) {
     transform: scale(0.8);
     opacity: 0.95;
 }
