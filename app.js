@@ -829,7 +829,7 @@ function startLongPressTimer(pileIndex) {
   clearTimeout(longPressTimer);
 
   longPressTimer = setTimeout(() => {
-    _showDiscardPileContents(pileIndex)
+    _didLongPressDiscardPile(pileIndex)
     didLongPress = true;
   }, 400);
 }
@@ -846,12 +846,14 @@ function endLongPress(event) {
   }
 }
 
-function _showDiscardPileContents(index) {
+function _didLongPressDiscardPile(index) {
   const discardPile = game.humanPlayer.discardPiles[index];
 
   if (discardPile.isEmpty || discardPile.cards.length == 1) return false;
 
   $discardPileContents.innerHTML = discardPile.cards.at(-2).toString();
+
+  console.log('pile index', index);
 
   const $pile = document.getElementById(`human-discard-${index}`);
   $pile.style.zIndex = 2;
@@ -861,10 +863,10 @@ function _showDiscardPileContents(index) {
   $discardPileContents.parentNode.removeChild($discardPileContents);
 
   const pileStyle = window.getComputedStyle($pile);
-  $discardPileContents.style.left = `${pileStyle.left}px`;
-  $discardPileContents.style.top = `${pileStyle.top}px`;
-  $discardPileContents.style.width = `${pileStyle.width}px`;
-  $discardPileContents.style.height = `${pileStyle.height}px`;
+  $discardPileContents.style.left = `${$pile.offsetLeft}px`;
+  $discardPileContents.style.top = `${$pile.offsetTop}px`;
+  $discardPileContents.style.width = `${pileStyle.width}`;
+  $discardPileContents.style.height = `${pileStyle.height}`;
   $discardPileContents.classList.remove('hidden');
 
   $pile.parentNode.appendChild($discardPileContents);
