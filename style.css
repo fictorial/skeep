@@ -222,7 +222,7 @@ button {
   }
 
   .player-area,
-  #build-piles {
+  #build-piles-area {
       transform: scale(1.25);
   }
 }
@@ -275,6 +275,8 @@ button {
 
 body.overflow .player-area {
   opacity: 1;
+
+  width: 100%;
 
   box-shadow: none;
 }
@@ -368,6 +370,6 @@ body.overflow .player-area {
 }
 
 #build-piles-area {
-    opacity: 1;
+  opacity: 1;
 }
 
