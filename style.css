@@ -132,7 +132,7 @@ button {
   display: none !important;
 }
 
-#controls, #metadata {
+#metadata {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -143,11 +143,21 @@ button {
   z-index: 999;
 }
 
-#controls {
-  position: absolute;
-  top: 0;
-  left: 0;
+#new-game, #toggle-help {
+  font-size: small;
+  box-shadow: 0 0.15rem 0.25rem 0 rgba(0, 0, 0, 0.2);
+}
 
+#new-game {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+
+#toggle-help {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
 }
 
 #metadata {
