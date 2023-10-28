@@ -15,8 +15,7 @@ let $cpuStockPile;
 let $humanStockPile;
 let $drawPile;
 let $appName;
-let $humanWins;
-let $cpuWins;
+let $record;
 let $newGame;
 let $humanPlayerArea;
 let $cpuPlayerArea;
@@ -29,11 +28,11 @@ let animationDuration = 600;
 function _loadElementsFromPage() {
   $appName = document.getElementById("app-name");
   $help = document.getElementById("help");
+  $record = document.getElementById("record");
 
   // CPU player
 
   $cpuPlayerArea = document.getElementById("cpu-player-area");
-  $cpuWins = document.getElementById("cpu-wins");
 
   for (let i = 0; i < 5; ++i)
     $cpuHand[i] = document.getElementById(`cpu-hand-${i}`);
@@ -49,7 +48,6 @@ function _loadElementsFromPage() {
   // Human player
 
   $humanPlayerArea = document.getElementById("human-player-area");
-  $humanWins = document.getElementById("human-wins");
 
   $humanHandRow = document.getElementById("human-hand");
   $humanDiscardRow = document.getElementById("human-discard");
@@ -270,7 +268,7 @@ function _syncPile(
   $pile,
   pile,
   showEffectiveWildCardValues = false,
-  bounce = true
+  attention = true
 ) {
   $pile.classList.remove("selected");
 
@@ -286,7 +284,7 @@ function _syncPile(
       $pile.textContent = pile.peekTop().toString();
     }
 
-    if (bounce) animateCSS($pile, "bounce");
+    if (attention) animateCSS($pile, "heartBeat");
   }
 
   $pile.setAttribute("data-badge", pile.cardCount);
@@ -319,7 +317,7 @@ function _syncCard($card, card) {
     $card.classList.remove("empty");
   }
 
-  if (card) animateCSS($card, "bounce");
+  if (card) animateCSS($card, "heartBeat");
 }
 
 function _syncCurrentHandCard(handCardNumber) {
@@ -359,9 +357,9 @@ function _currentStockPile() {
 // Updates the displayed top card of the stock pile for the current turn's player
 // from the model thereof.
 
-function _syncCurrentStockPile(bounce) {
+function _syncCurrentStockPile(attention) {
   let [$stockPile, stockPile] = _currentStockPile();
-  _syncPile($stockPile, stockPile, false, bounce);
+  _syncPile($stockPile, stockPile, false, attention);
 }
 
 // Returns the DOM element of the given build pile as well as the model thereof.
@@ -728,8 +726,7 @@ let gameDelegate = {
 function _loadStoredRecord() {
   if (localStorage.getItem("record")) {
     let record = JSON.parse(localStorage.getItem("record"));
-    $humanWins.textContent = record.humanWins;
-    $cpuWins.textContent = record.cpuWins;
+    $record.textContent = `${record.humanWins} - ${record.cpuWins}`;
   } else {
     localStorage.setItem("record", JSON.stringify({ humanWins: 0, cpuWins: 0 }));
   }
@@ -739,8 +736,7 @@ function _withStoredRecord(callback) {
   let record = JSON.parse(localStorage.getItem("record"));
   callback(record);
   localStorage.setItem("record", JSON.stringify(record));
-  $humanWins.textContent = record.humanWins;
-  $cpuWins.textContent = record.cpuWins;
+  $record.textContent = `${record.humanWins} - ${record.cpuWins}`;
 }
 
 function _humanDidWin() {
@@ -873,10 +869,16 @@ function _showDiscardPileContents(index) {
 
   $pile.parentNode.appendChild($discardPileContents);
 
-  // Slide up since on mobile the user's hand is below.
+  $pile.style.boxShadow = '0 2px 8px 0 rgba(0, 0, 0, 0.4)';
 
   animateCSS($pile, 'slideOutLeft',
-    () => animateCSS($pile, 'slideInLeft', _hideDiscardPileDisplay));
+    () => {
+      animateCSS($pile, 'slideInLeft', () => {
+        _hideDiscardPileDisplay();
+        $pile.style.boxShadow = '';
+      });
+    }
+  );
 }
 
 function addAutoRemoveEventListener(target, type, listenerFn, options) {

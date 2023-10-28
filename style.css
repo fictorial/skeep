@@ -1,367 +1,189 @@
-:root {
-  --background-color: #e7e7e7;
-
-  --text-color: #222;
-  --text-color-dark: #222;
-  --text-color-light: #ccc;
-
-  --controls-background-color: #eee;
-
-  --board-border-color: transparent;
-  --board-background-color: transparent;
-
-  --button-border-color: #999;
-  --button-background-color: #eee;
-  --button-text-color: #222;
-  --button-hover-background-color: #ccc;
-  --button-hover-text-color: #222;
-
-  --shadow-color: rgba(0, 0, 0, 0.2);
-
-  --player-area-background-color: #eee;
-  --player-area-border-color: #999;
-  --player-area-shadow-color: rgba(0, 0, 0, 0.2);
-
-  --card-empty-background-color: #ccc;
-  --card-background-color: white;
-  --card-border-color: #999;
-  --card-text-color: #333;
-
-  --card-selected-background-color: tomato;
-  --card-selected-border-color: #bc4c37;
-  --card-selected-text-color: rgba(255, 255, 255, 0.9);
-
-  --card-stock-background-color: #ccc;
-  --card-stock-text-color: rgba(0, 0, 0, 0.9);
-
-  --badge-background-color: #505f6d;
-  --badge-text-color: rgba(255, 255, 255, 0.9);
-  --badge-border-color: white;
-  --badge-border-width: 0;
-
-  --build-piles-card-background-color: #eee;
-  --build-piles-card-draw-background-color: #ccc;
-
-  --help-background-color: rgba(0, 0, 0, 0.6);
-  --help-text-color: rgba(255, 255, 255, 0.9);
-
-  --help-label-border-color: tomato;
-  --help-label-text-color: rgba(0, 0, 0, 0.9);
-}
-
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 
-  transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
-}
+html,
+body {
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 400;
 
-body,
-html {
-  font-family: "Fira Sans", sans-serif;
-  font-weight: 400;
+    color: rgba(255,255,255,0.7);
+    min-height: 100%;
 
-  background-color: var(--background-color);
-  color: var(--text-color);
-
-  height: 100vh;
-
-  font-size: clamp(10px, 1vmax, 1.1vmax);
-
-  -webkit-user-select: none;
-  -moz-user-select: -moz-none;
-  -ms-user-select: none;
-  user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: -moz-none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 body {
-  overflow: hidden;
-  margin: 2rem;
+    background: rgb(154,80,192);
+    background: radial-gradient(circle, rgba(154,80,192,1) 0%, rgba(85,42,124,1) 100%);
+
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.2) rgba(0,0,0,0);
+
+    overflow-x: hidden;
 }
 
 p {
-  margin: 1rem 0;
-}
-
-summary {
-  cursor: pointer;
+    margin: 1rem 0;
 }
 
 button {
-  outline: none;
-  appearance: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  border: 1px solid var(--button-border-color);
-  border-radius: 0.5rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: #00000021;
+    color: rgba(255,255,255,0.7);
 
-  background-color: var(--button-background-color);
-  color: var(--button-text-color);
+    padding: 0.5rem;
+    border-radius: 10px;
 
-  padding: 0.15rem 0.5rem;
-
-  font-family: inherit;
-  font-size: 1.2rem;
-
-  cursor: pointer;
-
-  min-height: 38px;
-  aspect-ratio: 1.25/1;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    font-family: inherit;
 }
 
-@media (hover: hover) {
-  button:hover {
-    background-color: var(--button-hover-background-color);
-    color: var(--button-hover-text-color);
-  }
+@media(hover:hover) {
+    button:hover {
+        background: rgba(255,255,255,0.9);
+        color: rgba(0,0,0,0.5);
+
+        cursor: pointer;
+    }
 }
 
-.hidden {
-  display: none !important;
+header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3rem;
+    background: transparent;
+    color: rgba(255,255,255,0.9);
+    padding: 1rem 0.5rem;
 }
 
-#metadata {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 0.25rem;
-
-  padding: 0.5rem;
-
-  z-index: 999;
+header > * {
+    width: 33%;
 }
 
-#new-game, #toggle-help {
-  font-size: small;
-  box-shadow: 0 0.15rem 0.25rem 0 rgba(0, 0, 0, 0.2);
+header, #controls, #record {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1ch;
 }
 
-#new-game {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-}
-
-#toggle-help {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-}
-
-#metadata {
-  position: absolute;
-  top: 0;
-  left: 50%;
-
-  transform: translateX(-50%);
-
-  font-size: small;
-
-  display: flex;
-  flex-direction: row;
+#controls {
+    justify-content: flex-end;
 }
 
 #app-name {
-  padding: 0.25rem 0;
-
-  text-transform: uppercase;
+    text-transform: uppercase;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    text-align: center;
 }
 
-#record {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-
-  opacity: 0.5;
-}
-
-#record:before {
-  content: "(";
-}
-
-#record:after {
-  content: ")";
-}
-
-#board {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-
-  transform: translate(-50%, -50%);
-
-  background-color: var(--board-background-color);
-
-  border: 1px solid var(--board-border-color);
-  border-radius: 0.25rem;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-
-  gap: 2rem;
-}
-
-@media (min-height: 1000px) {
-  #board {
-      gap: 6rem;
-  }
-
-  .player-area,
-  #build-piles-area {
-      transform: scale(1.25);
-  }
-}
-
-#build-piles .card {
-  background-color: var(--build-piles-card-background-color);
-}
-
-#build-piles .card.draw {
-  background-color: var(--build-piles-card-draw-background-color) !important;
-}
-
-.help {
-  font-size: small;
-
-  padding: 0.5rem 1rem;
-
-  border-radius: 0.5rem;
-
-  background-color: var(--help-background-color);
-  color: var(--help-text-color);
-
-  box-shadow: 0 0.15rem 0.25rem 0 var(--shadow-color);
-
-  margin: 0.5rem;
-}
-
-.help-label {
-  border-bottom: 2px solid var(--help-label-border-color);
-  color: var(--help-label-text-color);
-
-  text-align: center;
-
-  padding: 0.25rem 0.5rem;
+.hidden {
+    display: none !important;
 }
 
 .player-area {
-  opacity: 0.2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
 
-  position: relative;
-
-  border-radius: 0.25rem;
+    position: relative;
 }
 
 .player-area.active {
-  opacity: 1;
-
-  box-shadow: 0 0 2rem 0 var(--player-area-shadow-color);
+    transform: scale(1);
 }
 
-body.overflow .player-area {
-  opacity: 1;
-
-  width: 100%;
-
-  box-shadow: none;
+#cpu-player-area:not(.active),
+#human-player-area:not(.active) {
+    transform: scale(0.8);
+    opacity: 0.95;
 }
 
 .card-row {
-  padding: 1rem;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
 }
 
 .card {
-  border: 1px solid var(--card-border-color);
-  border-radius: 0.15rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  background-color: var(--card-background-color);
-  color: var(--card-text-color);
+    width: 3rem;
+    height: 4rem;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    background: #a66fc5;
+    color: #00000080;
 
-  min-height: 44px;
-  min-width: 44px;
+    font-size: 2rem;
+    font-weight: 600;
 
-  aspect-ratio: 2/3;
+    border-radius: 0.25rem;
 
-  flex: 1;
+    -webkit-touch-callout: none;
+    touch-action: none;
 
-  font-size: 1.6rem;
+    position: relative;
 
-  position: relative;
-
-  cursor: pointer;
-
-  -webkit-touch-callout: none;
-  touch-action: none;
+    cursor: pointer;
 }
 
 .card.selected {
-  background-color: var(--card-selected-background-color) !important;
-  color: var(--card-selected-text-color) !important;
-
-  border-color: var(--card-selected-border-color) !important;
+    background: rgba(255,255,255,0.9);
+    color: rgba(0,0,0,0.5);
 }
 
 .card.empty {
-  background-color: var(--card-empty-background-color);
+    opacity: 0.4;
 }
 
 .card.stock,
 .card.draw {
-  background-color: var(--card-stock-background-color);
-  color: var(--card-stock-text-color);
+    background: #cd8f83;
 }
 
-.card.badge:after {
-  content: attr(data-badge);
+.badge:after {
+    content: attr(data-badge);
 
-  position: absolute;
-  top: -0.75rem;
-  right: -0.75rem;
+    position: absolute;
+    top: -0.75rem;
+    right: -0.75rem;
 
-  width: 1.6em;
-  height: 1.6em;
+    width: 1.5rem;
+    height: 1.5rem;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    border-radius: 0.75rem;
 
-  background-color: var(--badge-background-color);
-  color: var(--badge-text-color);
+    font-size: 0.75rem;
 
-  border-radius: 50%;
-  border-style: solid;
-  border-width: var(--badge-border-width);
-  border-color: var(--badge-border-color);
+    color: #eee;
+    background: #5e2f85;
 
-  box-shadow: 0 0.15rem 0.5rem 0 var(--card-shadow-color);
+    z-index: 1;
 
-  font-size: 0.5em;
-  font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #discard-pile-contents {
@@ -369,7 +191,58 @@ body.overflow .player-area {
   margin: 0;
 }
 
-#build-piles-area {
-  opacity: 1;
+#board {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 1rem;
 }
 
+body:not(.overflow) #board {
+    position: absolute;
+    top: 45vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+}
+
+body.overflow #board {
+    margin-bottom: 2rem;
+}
+
+#build-piles-area {
+    padding: 1rem;
+    border-top: 2px solid rgba(255,255,255,0.2);
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+}
+
+#build-piles .card {
+    background: #2f144187;
+    color: rgba(255,255,255,0.7);
+}
+
+#build-piles .card.draw {
+    background: #cd8f83;
+}
+
+#help {
+    background: rgba(255,255,255,0.2);
+    color: rgba(0,0,0,0.7);
+    padding: 1rem;
+
+    width: 80%;
+    margin: 2rem auto;
+    margin-top: 6rem;
+    border-radius: 10px;
+
+    max-height: 60vh;
+    overflow: scroll;
+
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.2);
+}
+
+.help-label {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    text-align: center;
+}

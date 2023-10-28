@@ -1,121 +1,139 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, minimum-scale=1">
-    <title>Skeep</title>
-    <link rel="canonical" href="https://skeep.glitch.me/">
-    <link rel="stylesheet" href="style.css" />
-    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,600" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#41285c">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
-    <link href="splashscreens/iphone5_splash.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-    <link href="splashscreens/iphone6_splash.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-    <link href="splashscreens/iphoneplus_splash.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
-    <link href="splashscreens/iphonex_splash.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
-    <link href="splashscreens/iphonexr_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-    <link href="splashscreens/iphonexsmax_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
-    <link href="splashscreens/ipad_splash.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-    <link href="splashscreens/ipadpro1_splash.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-    <link href="splashscreens/ipadpro3_splash.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-    <link href="splashscreens/ipadpro2_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-  </head>
-  <body>
-    <div id="metadata">
-      <div id="app-name">Skeep</div>
-      <div id="record"><div id="human-wins">0</div>-<div id="cpu-wins">0</div></div>
-    </div>
-    <button id="new-game">New</button>
-    <button id="toggle-help">?</button>
-    <div id="board">
-      <div class="help hidden" id="help">
-        <details>
-          <summary>How to Play</summary>
-          <p>
-            Be the first to play all the cards in your stock pile.
-            Players take turns trying to build sequences of cards from 1-12 in the 4
-            build piles by moving cards from your stock, one of the discard piles, or
-            your hand.</p>
-          <p>
-            When no moves remain, discard a card from your hand to one of
-            4 discard piles. If you play all 5 cards in your hand, you will be drawn
-            another 5 immediately.</p>
-          <p>
-            W cards are wild.  Discard piles do not require a sequence.</p>
-          <p>
-            To move a card, select the card and then select the target card pile.
-            To deselect a selected card, select the card again.
-            On desktop browsers, you can also drag and drop the cards.
-          </p>
-          <p>
-            Long-press one of your discard piles that has two more cards to
-            reveal the card under the top-most card.
-          </p>
-        </details>
-      </div>
-      <div class="player-area" id="cpu-player-area">
-        <div class="help-label hidden">Computer's Hand</div>
-        <div class="card-row" id="cpu-hand">
-          <div class="card cpu" id="cpu-hand-0"></div>
-          <div class="card cpu" id="cpu-hand-1"></div>
-          <div class="card cpu" id="cpu-hand-2"></div>
-          <div class="card cpu" id="cpu-hand-3"></div>
-          <div class="card cpu" id="cpu-hand-4"></div>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, minimum-scale=1">
+
+        <title>Skeep</title>
+
+        <link rel="canonical" href="https://skeep.glitch.me/">
+
+        <link rel="stylesheet" href="style.css" />
+
+        <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,600" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+        <link rel="manifest" href="manifest.json">
+        <meta name="theme-color" content="#623189">
+
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
+        <link href="splashscreens/iphone5_splash.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+        <link href="splashscreens/iphone6_splash.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+        <link href="splashscreens/iphoneplus_splash.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+        <link href="splashscreens/iphonex_splash.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+        <link href="splashscreens/iphonexr_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+        <link href="splashscreens/iphonexsmax_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+        <link href="splashscreens/ipad_splash.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+        <link href="splashscreens/ipadpro1_splash.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+        <link href="splashscreens/ipadpro3_splash.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+        <link href="splashscreens/ipadpro2_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    </head>
+
+    <body>
+        <header>
+            <div id="record"></div>
+
+            <div id="app-name">Skeep</div>
+
+            <div id="controls">
+                <button id="new-game">New</button>
+                <button id="toggle-help">Help</button>
+            </div>
+        </header>
+
+        <div class="help hidden" id="help">
+            <h2>How to Play</h2>
+            <p>
+                Be the first to play all the cards in your stock pile.
+                Players take turns trying to build sequences of cards from 1-12 in the 4
+                build piles by moving cards from your stock, one of the discard piles, or
+                your hand.</p>
+            <p>
+                When no moves remain, discard a card from your hand to one of
+                4 discard piles. If you play all 5 cards in your hand, you will be drawn
+                another 5 immediately.</p>
+            <p>
+                W cards are wild.  Discard piles do not require a sequence.</p>
+            <p>
+                To move a card, select the card and then select the target card pile.
+                To deselect a selected card, select the card again.
+                On desktop browsers, you can also drag and drop the cards.
+            </p>
+            <p>
+                Long-press one of your discard piles that has two more cards to
+                reveal the card under the top-most card.
+            </p>
         </div>
-        <div class="help-label hidden">Computer's Discard Piles and Stock Pile</div>
-        <div class="card-row" id="cpu-discard">
-          <div class="card cpu empty" id="cpu-discard-0"></div>
-          <div class="card cpu empty" id="cpu-discard-1"></div>
-          <div class="card cpu empty" id="cpu-discard-2"></div>
-          <div class="card cpu empty" id="cpu-discard-3"></div>
-          <div class="card cpu badge stock" id="cpu-stock" data-badge=""></div>
+
+        <div id="board">
+            <div class="player-area" id="cpu-player-area">
+                <div class="help-label hidden">Computer's Hand</div>
+                <div class="card-row" id="cpu-hand">
+                    <div class="card cpu" id="cpu-hand-0"></div>
+                    <div class="card cpu" id="cpu-hand-1"></div>
+                    <div class="card cpu" id="cpu-hand-2"></div>
+                    <div class="card cpu" id="cpu-hand-3"></div>
+                    <div class="card cpu" id="cpu-hand-4"></div>
+                </div>
+
+                <div class="help-label hidden">Computer's Discard Piles and Stock Pile</div>
+                <div class="card-row" id="cpu-discard">
+                    <div class="card cpu empty" id="cpu-discard-0"></div>
+                    <div class="card cpu empty" id="cpu-discard-1"></div>
+                    <div class="card cpu empty" id="cpu-discard-2"></div>
+                    <div class="card cpu empty" id="cpu-discard-3"></div>
+                    <div class="card cpu badge stock" id="cpu-stock" data-badge=""></div>
+                </div>
+            </div>
+
+            <div class="player-area" id="build-piles-area">
+                <div class="help-label hidden">Build Piles and Draw Pile</div>
+                <div class="card-row" id="build-piles">
+                    <div class="card build empty" id="build-0" ondrop="dragDidDrop(event)" ondragover="dragDidHover(event)"></div>
+                    <div class="card build empty" id="build-1" ondrop="dragDidDrop(event)" ondragover="dragDidHover(event)"></div>
+                    <div class="card build empty" id="build-2" ondrop="dragDidDrop(event)" ondragover="dragDidHover(event)"></div>
+                    <div class="card build empty" id="build-3" ondrop="dragDidDrop(event)" ondragover="dragDidHover(event)"></div>
+                    <div class="card draw badge" id="draw" data-badge=""></div>
+                </div>
+            </div>
+
+            <div class="player-area" id="human-player-area">
+                <div class="help-label hidden">Your Discard Piles and Stock Pile</div>
+                <div class="card-row" id="human-discard">
+                    <div class="card human empty discard" id="human-discard-0" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
+                    <div class="card human empty discard" id="human-discard-1" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
+                    <div class="card human empty discard" id="human-discard-2" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
+                    <div class="card human empty discard" id="human-discard-3" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
+                    <div class="card human badge stock" id="human-stock" data-badge="" draggable="true" ondragstart="dragDidStart(event)"></div>
+                </div>
+
+                <div class="help-label hidden">Your Hand</div>
+                <div class="card-row" id="human-hand">
+                    <div class="card human" id="human-hand-0" draggable="true" ondragstart="dragDidStart(event)"></div>
+                    <div class="card human" id="human-hand-1" draggable="true" ondragstart="dragDidStart(event)"></div>
+                    <div class="card human" id="human-hand-2" draggable="true" ondragstart="dragDidStart(event)"></div>
+                    <div class="card human" id="human-hand-3" draggable="true" ondragstart="dragDidStart(event)"></div>
+                    <div class="card human" id="human-hand-4" draggable="true" ondragstart="dragDidStart(event)"></div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="player-area" id="build-piles-area">
-        <div class="help-label hidden">Build Piles and Draw Pile</div>
-        <div class="card-row" id="build-piles">
-          <div class="card build empty" id="build-0" ondrop="dragDidDrop(event)" ondragover="dragDidHover(event)"></div>
-          <div class="card build empty" id="build-1" ondrop="dragDidDrop(event)" ondragover="dragDidHover(event)"></div>
-          <div class="card build empty" id="build-2" ondrop="dragDidDrop(event)" ondragover="dragDidHover(event)"></div>
-          <div class="card build empty" id="build-3" ondrop="dragDidDrop(event)" ondragover="dragDidHover(event)"></div>
-          <div class="card draw badge" id="draw" data-badge=""></div>
-        </div>
-      </div>
-      <div class="player-area" id="human-player-area">
+
         <div id="discard-pile-contents" class="hidden card"></div>
-        <div class="help-label hidden">Your Discard Piles and Stock Pile</div>
-        <div class="card-row" id="human-discard">
-          <div class="card human empty discard" id="human-discard-0" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
-          <div class="card human empty discard" id="human-discard-1" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
-          <div class="card human empty discard" id="human-discard-2" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
-          <div class="card human empty discard" id="human-discard-3" draggable="true" ondragstart="dragDidStart(event)" ondragover="dragDidHover(event)" ondrop="dragDidDrop(event)"></div>
-          <div class="card human badge stock" id="human-stock" data-badge="" draggable="true" ondragstart="dragDidStart(event)"></div>
-        </div>
-        <div class="help-label hidden">Your Hand</div>
-        <div class="card-row" id="human-hand">
-          <div class="card human" id="human-hand-0" draggable="true" ondragstart="dragDidStart(event)"></div>
-          <div class="card human" id="human-hand-1" draggable="true" ondragstart="dragDidStart(event)"></div>
-          <div class="card human" id="human-hand-2" draggable="true" ondragstart="dragDidStart(event)"></div>
-          <div class="card human" id="human-hand-3" draggable="true" ondragstart="dragDidStart(event)"></div>
-          <div class="card human" id="human-hand-4" draggable="true" ondragstart="dragDidStart(event)"></div>
-        </div>
-      </div>
-    </div>
-    <script src="game.js"></script>
-    <script src="app.js"></script>
-    <script>
-      if('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js', { scope: '/' })
-          .then(function(registration) {
-            console.log('Service Worker Registered');
-          });
-        navigator.serviceWorker.ready.then(function(registration) {
-          console.log('Service Worker Ready');
-        });
-      }
-    </script>
-  </body>
+
+        <script src="game.js"></script>
+        <script src="app.js"></script>
+
+        <script>
+            if('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                    .then(function(registration) {
+                        console.log('Service Worker Registered');
+                    });
+                navigator.serviceWorker.ready.then(function(registration) {
+                    console.log('Service Worker Ready');
+                });
+            }
+        </script>
+    </body>
 </html>
