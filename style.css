@@ -11,9 +11,14 @@ html,
 body {
     font-family: "Fira Sans", sans-serif;
     font-weight: 400;
+    font-size: clamp(10px, 1.4vmax, 2vmax);
+
+    background: rgb(154,80,192);
+    background: radial-gradient(circle, rgba(154,80,192,1) 0%, rgba(85,42,124,1) 100%);
 
     color: rgba(255,255,255,0.7);
-    min-height: 100%;
+
+    height: calc(100 * var(--vh));
 
     -webkit-user-select: none;
     -moz-user-select: -moz-none;
@@ -22,13 +27,20 @@ body {
 }
 
 body {
-    background: rgb(154,80,192);
-    background: radial-gradient(circle, rgba(154,80,192,1) 0%, rgba(85,42,124,1) 100%);
-
     scrollbar-width: thin;
     scrollbar-color: rgba(255,255,255,0.2) rgba(0,0,0,0);
 
     overflow-x: hidden;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+
+    width: 100vw;
+    height: calc(100 * var(--vh));
+    margin: 0;
+    padding-top: 3rem;
 }
 
 p {
@@ -64,10 +76,11 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    height: 3rem;
+    height: 4rem;
+
     background: transparent;
     color: rgba(255,255,255,0.9);
-    padding: 1rem 0.5rem;
+    padding: 1rem 5%;
 }
 
 header > * {
@@ -129,13 +142,13 @@ body:not(.overflow) #human-player-area:not(.active) {
     justify-content: center;
     align-items: center;
 
-    width: 3rem;
-    height: 4rem;
+    width: 2em;
+    height: 3em;
 
     background: #a66fc5;
     color: #00000080;
 
-    font-size: 2rem;
+    font-size: 2em;
     font-weight: 600;
 
     border-radius: 0.25rem;
@@ -200,16 +213,13 @@ body:not(.overflow) #human-player-area:not(.active) {
 #board {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: stretch;
     gap: 1rem;
 }
 
 body:not(.overflow) #board {
-    position: absolute;
-    top: 45vh;
-    left: 50vw;
-    transform: translate(-50%, -50%);
+    flex: 1;
 }
 
 body.overflow #board {
@@ -237,6 +247,8 @@ body.overflow #board {
     padding: 1rem;
 
     width: 80%;
+    min-height: 20vh;
+
     margin: 2rem auto;
     margin-top: 6rem;
     border-radius: 10px;
@@ -252,3 +264,34 @@ body.overflow #board {
     text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     text-align: center;
 }
+
+@media screen and (orientation: landscape) {
+    #board {
+        flex-direction: row;
+        overflow: scroll;
+    }
+
+    .card-row {
+        flex-direction: row;
+    }
+
+    .card {
+        font-size: 1.8vmax !important;
+    }
+
+    .player-area {
+    }
+
+    #build-piles-area {
+        border: none;
+    }
+
+    #build-piles-area .card {
+        font-size: 1.2vmax !important;
+    }
+
+    #build-piles-area .card-row {
+        flex-direction: column;
+    }
+}
+
