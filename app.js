@@ -742,12 +742,10 @@ function _withStoredRecord(callback) {
 function _humanDidWin() {
   _withStoredRecord(record => record.humanWins++)
 
-  const confetti = new Confetti('app-name');
-  confetti.setCount(75);
-  confetti.setSize(1);
-  confetti.setPower(25);
-  confetti.setFade(false);
-  confetti.destroyTarget(false);
+  party.confetti(document.body, {
+      count: party.variation.range(1000, 20000),
+      shapes: ["star", "roundedSquare"],
+  });
 }
 
 function _cpuDidWin() {
@@ -770,7 +768,6 @@ function dragDidHover(ev) {
   ev.preventDefault();
   if (_isCPUCurrent()) return;
   ev.dataTransfer.dropEffect = "move";
-  console.log("drag: over", ev.target.id);
 }
 
 function dragDidDrop(ev) {
