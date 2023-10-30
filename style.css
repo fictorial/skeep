@@ -167,7 +167,8 @@ body:not(.overflow) #human-player-area:not(.active) {
     }
 }
 
-.card.selected {
+.card.selected,
+.card.selected.stock {
     background: rgba(255,255,255,0.9);
     color: rgba(0,0,0,0.5);
 }
