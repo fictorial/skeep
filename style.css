@@ -254,7 +254,6 @@ body.overflow #board {
 
     margin: 2rem auto;
     margin-top: 6rem;
-    border-radius: 10px;
 
     scrollbar-width: thin;
     scrollbar-color: rgba(255,255,255,0.2);
