@@ -741,6 +741,13 @@ function _withStoredRecord(callback) {
 
 function _humanDidWin() {
   _withStoredRecord(record => record.humanWins++)
+
+  const confetti = new Confetti('app-name');
+  confetti.setCount(75);
+  confetti.setSize(1);
+  confetti.setPower(25);
+  confetti.setFade(false);
+  confetti.destroyTarget(false);
 }
 
 function _cpuDidWin() {
@@ -753,9 +760,10 @@ function dragDidStart(ev) {
     return;
   }
 
+  clearTimeout(longPressTimer);
+
   ev.dataTransfer.setData("text/plain", ev.target.id);
   ev.dataTransfer.dropEffect = "move";
-  console.log("drag: started dragging", ev.target.id);
 }
 
 function dragDidHover(ev) {

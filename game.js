@@ -35,11 +35,9 @@ class Pile {
   }
 
   willPushCard(card) {
-    console.log('before push', JSON.stringify(this.cards));
   }
 
   didPushCard(card) {
-    console.log('after push', JSON.stringify(this.cards));
   }
 
   /**
@@ -375,10 +373,6 @@ class Game {
       let card;
 
       if (this.drawPile.isEmpty && this.completedBuildPileCards.length > 0) {
-        console.log(
-          "using completed build pile cards as new draw pile as draw pile is depleted"
-        );
-
         this.drawPile.cards = this.completedBuildPileCards;
         this.drawPile.shuffle();
         this.completedBuildPileCards = [];
@@ -411,8 +405,6 @@ class Game {
     if (this.delegate) {
       let delegateDelay = this.delegate.turnDidStart();
 
-      console.log('delegate wants to wait this long before dealing cards', delegateDelay);
-
       if (!isNaN(delegateDelay)) {
         delay = delegateDelay;
       }
@@ -431,14 +423,10 @@ class Game {
   }
 
   _endCurrentTurn() {
-    console.log("game._endCurrentTurn");
-
     let delay = 0;
 
     if (this.delegate) {
       let delegateDelay = this.delegate.turnDidEnd();
-
-      console.log('delegate wants to wait this long before starting next turn', delegateDelay);
 
       if (!isNaN(delegateDelay)) {
         delay = delegateDelay;
@@ -531,8 +519,6 @@ class Game {
    */
 
   performDiscardAction(action) {
-    console.log("game.performDiscardAction");
-
     if (!this.isActive) throw new Error("game has ended");
     let player = this.currentTurn.player;
 
