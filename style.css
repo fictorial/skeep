@@ -11,7 +11,7 @@ html,
 body {
     font-family: "Fira Sans", sans-serif;
     font-weight: 400;
-    font-size: clamp(10px, 1.4vmax, 2vmax);
+    font-size: clamp(10px, 1.4vh, 2vh);
 
     background: rgb(154,80,192);
     background: radial-gradient(circle, rgba(154,80,192,1) 0%, rgba(85,42,124,1) 100%);
@@ -43,7 +43,6 @@ body {
 
     margin: 0 auto;
     padding-top: 3rem;
-
 }
 
 @media screen and (min-width: 1280px) {
@@ -226,6 +225,8 @@ body:not(.overflow) #human-player-area:not(.active) {
     justify-content: space-around;
     align-items: stretch;
     gap: 1rem;
+
+    padding: 1rem;
 }
 
 body:not(.overflow) #board {
@@ -285,7 +286,7 @@ body.overflow #board {
     }
 
     .card {
-        font-size: 1.8vmax !important;
+        font-size: 1.8vh !important;
     }
 
     .player-area {
@@ -296,7 +297,7 @@ body.overflow #board {
     }
 
     #build-piles-area .card {
-        font-size: 1.2vmax !important;
+        font-size: 1.2vh !important;
     }
 
     #build-piles-area .card-row {
