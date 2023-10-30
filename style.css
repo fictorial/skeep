@@ -248,13 +248,13 @@ body.overflow #board {
 
     width: 80%;
     min-height: 20vh;
+    max-height: 30vh;
+
+    overflow: scroll;
 
     margin: 2rem auto;
     margin-top: 6rem;
     border-radius: 10px;
-
-    max-height: 60vh;
-    overflow: scroll;
 
     scrollbar-width: thin;
     scrollbar-color: rgba(255,255,255,0.2);
