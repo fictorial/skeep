@@ -593,6 +593,8 @@ function _nextCPUAction() {
 
 let gameDelegate = {
   gameDidStart() {
+    $appName.textContent = "Skeep";
+
     _syncDrawPileBadge();
 
     for (let i = 0; i < 4; ++i) {
@@ -718,8 +720,6 @@ let gameDelegate = {
 
     _deselectAllCards();
     _hideDiscardPileDisplay();
-
-    alert(text);
   }
 };
 
