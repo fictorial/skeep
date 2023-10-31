@@ -761,17 +761,24 @@ function dragDidStart(ev) {
   clearTimeout(longPressTimer);
 
   ev.dataTransfer.setData("text/plain", ev.target.id);
-  ev.dataTransfer.dropEffect = "move";
+  ev.dataTransfer.effectAllowed = "move";
 }
 
 function dragDidHover(ev) {
   ev.preventDefault();
   if (_isCPUCurrent()) return;
+
+  document.querySelectorAll('.drag-hovered').forEach(node => node.classList.remove('drag-hovered'));
+  ev.target.classList.add("drag-hovered");
+
   ev.dataTransfer.dropEffect = "move";
 }
 
 function dragDidDrop(ev) {
   ev.preventDefault();
+
+  document.querySelectorAll('.drag-hovered').forEach(node => node.classList.remove('drag-hovered'));
+
   if (_isCPUCurrent()) return;
 
   let $node = ev.target;

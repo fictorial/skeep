@@ -275,6 +275,11 @@ body.overflow #board {
     text-align: center;
 }
 
+.drag-hovered {
+    border: 2px dashed rgba(255,255,255,0.7);
+    transform: scale(1.05);
+}
+
 @media screen and (orientation: landscape) {
     #board {
         flex-direction: row;
